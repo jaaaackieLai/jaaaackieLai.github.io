@@ -1,0 +1,113 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '個人部落格' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://jaaaackielai.github.io/avatar-awkward-pixel.png" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <script is:inline>
+      (function () {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (theme === 'dark' || (!theme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-sm" style="border-color: var(--border); background-color: var(--nav-bg);">
+      <nav class="max-w-2xl mx-auto px-6 h-12 flex items-center justify-between">
+        <a href="/" class="font-mono text-sm font-medium transition-colors duration-150" style="color: var(--text-1);">
+          Jackie
+        </a>
+        <div class="flex items-center gap-6">
+          <a href="/blog" class="nav-link">
+            <span data-zh="部落格" data-en="Blog">部落格</span>
+          </a>
+          <!-- 語言切換：EN / 中 -->
+          <button class="seg-ctrl seg-ctrl-lang" onclick="toggleLanguage()" aria-label="切換語言">
+            <span class="seg-thumb"></span>
+            <span class="seg-opt">EN</span>
+            <span class="seg-opt">中</span>
+          </button>
+
+          <!-- 深淺模式切換：☀ / ☾ -->
+          <button class="seg-ctrl seg-ctrl-theme" onclick="toggleTheme()" aria-label="切換深淺模式">
+            <span class="seg-thumb"></span>
+            <!-- 太陽：亮色模式 -->
+            <span class="seg-opt">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z" />
+              </svg>
+            </span>
+            <!-- 月亮：深色模式 -->
+            <span class="seg-opt">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="pt-12">
+      <slot />
+    </main>
+
+    <footer class="mt-20 border-t py-6" style="border-color: var(--border);">
+      <div class="max-w-2xl mx-auto px-6 text-center text-xs font-mono" style="color: var(--footer-text);">
+        © 2026 Jackie
+      </div>
+    </footer>
+
+    <script is:inline>
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      }
+
+      function applyLanguage(lang) {
+        document.querySelectorAll('[data-zh]').forEach(function (el) {
+          el.textContent = el.getAttribute('data-' + lang);
+        });
+        if (lang === 'zh') {
+          document.documentElement.classList.add('lang-zh');
+        } else {
+          document.documentElement.classList.remove('lang-zh');
+        }
+        localStorage.setItem('lang', lang);
+        document.documentElement.lang = lang === 'zh' ? 'zh-TW' : 'en';
+      }
+
+      function toggleLanguage() {
+        var current = localStorage.getItem('lang') || 'en';
+        applyLanguage(current === 'en' ? 'zh' : 'en');
+      }
+
+      // Apply saved language on load (default: English)
+      (function () {
+        var lang = localStorage.getItem('lang') || 'en';
+        applyLanguage(lang);
+      })();
+    </script>
+  </body>
+</html>

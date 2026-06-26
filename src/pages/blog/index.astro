@@ -1,0 +1,59 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const topics = [
+  {
+    slug: 'agentic-ai',
+    title: 'Agentic AI',
+    desc: { zh: '探索 AI Agent 系統的設計原則、multi-agent 協作架構，以及如何在實際應用中落地。',
+            en: 'Exploring the design principles of AI Agent systems, multi-agent collaboration architectures, and how to deploy them in real-world applications.' },
+    tags: ['LLM', 'Agent', 'Multi-Agent', 'RAG'],
+    articles: 3,
+    articlesLabel: { zh: '篇', en: 'articles' },
+  },
+  {
+    slug: 'deep-learning',
+    title: 'Deep Learning',
+    desc: { zh: '從 CNN 到 Transformer，系統性整理現代深度學習核心架構的設計思路與原理。',
+            en: 'From CNNs to Transformers, a systematic look at the design principles behind modern deep learning architectures.' },
+    tags: ['Transformer', 'CNN', 'ResNet', 'Neural Networks'],
+    articles: 3,
+    articlesLabel: { zh: '篇', en: 'articles' },
+  },
+];
+---
+
+<Layout title="部落格 — Jackie">
+  <section class="max-w-2xl mx-auto px-6 pt-20 pb-24">
+    <div class="mb-12">
+      <p class="section-label" data-zh="所有文章" data-en="All Posts">All Posts</p>
+    </div>
+
+    <div>
+      {topics.map((topic) => (
+        <a href={`/blog/${topic.slug}`} class="blog-card flex items-start justify-between block">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-baseline gap-3 mb-2">
+              <h2 class="text-sm font-medium transition-colors duration-150 group-hover:opacity-70"
+                  style="color: var(--text-1);">{topic.title}</h2>
+              <span class="text-[11px] font-mono" style="color: var(--text-5);">
+                {topic.articles}&nbsp;<span data-zh={topic.articlesLabel.zh} data-en={topic.articlesLabel.en}>{topic.articlesLabel.en}</span>
+              </span>
+            </div>
+            <p class="text-sm leading-[1.75] mb-3" style="color: var(--text-3);"
+               data-zh={topic.desc.zh} data-en={topic.desc.en}>{topic.desc.en}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {topic.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </div>
+          <svg class="blog-card-arrow w-3.5 h-3.5 flex-shrink-0 ml-4 mt-0.5"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

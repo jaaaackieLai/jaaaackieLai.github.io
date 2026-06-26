@@ -1,0 +1,84 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const articles = [
+  {
+    slug: 'transformer',
+    title: { zh: 'Transformer', en: 'Transformer' },
+    date: '2026-06-27',
+    readTime: { zh: '— 分鐘', en: '— min' },
+    desc: { zh: '', en: '' },
+    tags: ['Self-Attention', 'NLP'],
+  },
+  {
+    slug: 'cnn',
+    title: { zh: 'CNN', en: 'CNN' },
+    date: '2026-06-27',
+    readTime: { zh: '— 分鐘', en: '— min' },
+    desc: { zh: '', en: '' },
+    tags: ['Computer Vision', 'Convolution'],
+  },
+  {
+    slug: 'resnet',
+    title: { zh: 'ResNet', en: 'ResNet' },
+    date: '2026-06-27',
+    readTime: { zh: '— 分鐘', en: '— min' },
+    desc: { zh: '', en: '' },
+    tags: ['Skip Connection', 'Deep Learning'],
+  },
+];
+---
+
+<Layout title="Deep Learning — 部落格 — Jackie">
+  <section class="max-w-4xl mx-auto px-6 pt-16 pb-20">
+    <div class="mb-12">
+      <a href="/blog" class="inline-flex items-center gap-1.5 text-sm transition-colors mb-6 nav-link">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span data-zh="所有文章" data-en="All Posts">All Posts</span>
+      </a>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-semibold" style="color: var(--text-1);">Deep Learning</h1>
+      </div>
+    </div>
+
+    <!-- 文章列表 -->
+    <div>
+      <p class="section-heading" data-zh="系列文章" data-en="Article Series">Article Series</p>
+      <div class="space-y-4">
+        {articles.map((article, index) => (
+          <a href={`/blog/deep-learning/${article.slug}`} class="article-card">
+            <div class="flex items-start gap-4">
+              <span class="text-2xl font-mono font-bold flex-shrink-0 mt-0.5" style="color: var(--text-5);">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-4 mb-1.5">
+                  <h2 class="font-medium leading-snug" style="color: var(--text-1);"
+                      data-zh={article.title.zh} data-en={article.title.en}>{article.title.en}</h2>
+                  <span class="flex-shrink-0 text-xs font-mono" style="color: var(--text-4);"
+                        data-zh={article.readTime.zh} data-en={article.readTime.en}>{article.readTime.en}</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex flex-wrap gap-1.5">
+                    {article.tags.map((tag) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                  <span class="text-xs font-mono" style="color: var(--text-4);">{article.date}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

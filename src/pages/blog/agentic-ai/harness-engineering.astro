@@ -1,0 +1,347 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout title="Harness Engineering — Jackie" description="探討在當前已經有足夠好的 LLM 模型底下，我們如何「駕馭」LLM 來協助我們處理任務。">
+  <section class="max-w-2xl mx-auto px-6 pt-16 pb-24">
+    <div class="mb-10">
+      <a href="/blog/agentic-ai" class="inline-flex items-center gap-1.5 text-sm transition-colors mb-8"
+         style="color: var(--text-4);" onmouseover="this.style.color='var(--text-2)'" onmouseout="this.style.color='var(--text-4)'">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Agentic AI
+      </a>
+
+      <p class="section-label">Agentic AI · 02</p>
+      <h1 class="text-3xl font-light tracking-tight mb-4" style="color: var(--text-1);">
+        Harness Engineering
+      </h1>
+      <p class="text-lg leading-relaxed" style="color: var(--text-3);"
+         data-zh="探討在當前已經有足夠好的 LLM 模型底下，我們如何「駕馭」LLM 來協助我們處理任務。"
+         data-en="How to harness capable LLMs to reliably handle complex tasks, given the models are already good enough.">
+        How to harness capable LLMs to reliably handle complex tasks, given the models are already good enough.
+      </p>
+
+      <div class="flex items-center gap-4 mt-6 text-xs font-mono" style="color: var(--text-5);">
+        <span>2026-06-22</span>
+        <span>·</span>
+        <span data-zh="15 分鐘" data-en="15 min">15 min</span>
+      </div>
+    </div>
+
+    <div class="border-t pt-10" style="border-color: var(--border);">
+
+      <!-- 前言 -->
+      <p class="text-lg leading-relaxed mb-6" style="color: var(--text-3);"
+         data-zh="模型已經夠聰明了。這不是這幾年對 AI 系統最重要的洞察，而是一個前提。真正有趣的問題是：在模型夠聰明之後，我們要怎麼讓它在現實世界的工程環境中可靠地行動？"
+         data-en="The model is already smart enough. That is not the most important insight about AI systems in recent years; it is a premise. The real question is: once the model is capable, how do we make it act reliably in real-world engineering environments?">
+        The model is already smart enough. That is not the most important insight about AI systems in recent years; it is a premise. The real question is: once the model is capable, how do we make it act reliably in real-world engineering environments?
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="這個問題的答案叫做 Harness Engineering。"
+         data-en="The answer to that question is called Harness Engineering.">
+        The answer to that question is called Harness Engineering.
+      </p>
+
+      <!-- 什麼是 Harness -->
+      <p class="section-label"
+         data-zh="定義" data-en="Definition">Definition</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Harness Engineering 是持續運作的主動控制結構，用於約束模型在工程環境中的行為。它不是模型能力的附件，而是將模型放入工程環境的前提條件。"
+         data-en="Harness Engineering is an actively operating control structure that constrains model behavior within an engineering environment. It is the prerequisite for placing a model into an engineering context, not an add-on to model capabilities.">
+        Harness Engineering is an actively operating control structure that constrains model behavior within an engineering environment. It is the prerequisite for placing a model into an engineering context, not an add-on to model capabilities.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="一句話說清楚：Prompt 決定模型怎麼說話，Harness 決定模型怎麼行動。"
+         data-en="In one sentence: the prompt decides how the model speaks; the harness decides how the model acts.">
+        In one sentence: the prompt decides how the model speaks; the harness decides how the model acts.
+      </p>
+
+      <!-- 為什麼需要 Harness -->
+      <p class="section-label"
+         data-zh="模型天生不穩定" data-en="Models Are Unstable by Nature">Models Are Unstable by Nature</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="模型天生不穩定。這是 Harness Engineering 的出發點，也是它存在的理由。"
+         data-en="Models are unstable by nature. This is the starting point of Harness Engineering, and the reason it exists.">
+        Models are unstable by nature. This is the starting point of Harness Engineering, and the reason it exists.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="當模型只輸出文字時，錯誤的代價是溝通成本。當模型可以執行命令、寫檔案、存取網路、修改 Git 歷史時，錯誤的代價是執行後果。系統設計必須圍繞這個現實展開：不假設模型總是正確，而是確保模型出錯時系統能恢復秩序。"
+         data-en="When a model only produces text, the cost of a mistake is a communication issue. When a model can run commands, write files, access the network, and modify Git history, the cost of a mistake is an execution consequence. System design must be built around this reality: not assuming the model will always be correct, but ensuring the system can restore order when it is not.">
+        When a model only produces text, the cost of a mistake is a communication issue. When a model can run commands, write files, access the network, and modify Git history, the cost of a mistake is an execution consequence. System design must be built around this reality: not assuming the model will always be correct, but ensuring the system can restore order when it is not.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="這個視角改變了整個設計思路：模型是不穩定元件，不是隊友。系統必須圍繞不穩定來設計。"
+         data-en="This perspective reframes the entire design approach: the model is an unstable component, not a teammate. The system must be designed around that instability.">
+        This perspective reframes the entire design approach: the model is an unstable component, not a teammate. The system must be designed around that instability.
+      </p>
+
+      <!-- Prompt 是控制平面 -->
+      <p class="section-label"
+         data-zh="Prompt 是控制平面" data-en="Prompt as the Control Plane">Prompt as the Control Plane</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="最常見的誤解是把 prompt 當成「人設」，也就是讓模型表現得更像某種角色的方式。Harness Engineering 的第一個原則是把這個想法放下：Prompt 是控制平面（control plane）的一部分，它是分層的行為制度，不是人設文案。"
+         data-en="The most common misconception is treating the prompt as a personality (a way to make the model act more like a certain character). The first principle of Harness Engineering is to set that idea aside: the prompt is part of the control plane, a layered behavioral framework, not a persona script.">
+        The most common misconception is treating the prompt as a personality (a way to make the model act more like a certain character). The first principle of Harness Engineering is to set that idea aside: the prompt is part of the control plane, a layered behavioral framework, not a persona script.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="在 Claude Code 的設計中，prompt 有嚴格的優先順序：override 指令、coordinator 指令、agent 角色指令、客製化指令、預設行為。每一層都有明確的職責，不同來源的指令不能混在一起。"
+         data-en="In Claude Code's design, prompts follow a strict precedence order: override instructions, coordinator instructions, agent role instructions, custom instructions, default behavior. Each layer has a defined responsibility, and instructions from different sources are never mixed together.">
+        In Claude Code's design, prompts follow a strict precedence order: override instructions, coordinator instructions, agent role instructions, custom instructions, default behavior. Each layer has a defined responsibility, and instructions from different sources are never mixed together.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="這套分層結構連接了記憶系統（CLAUDE.md、session memory），形成知識治理協議。Prompt 只有在被整合進這套明確的控制結構時，才能發揮真正的作用。"
+         data-en="This layered structure connects to the memory system (CLAUDE.md, session memory), forming a knowledge governance protocol. A prompt only delivers real value when it is integrated into this explicit control structure.">
+        This layered structure connects to the memory system (CLAUDE.md, session memory), forming a knowledge governance protocol. A prompt only delivers real value when it is integrated into this explicit control structure.
+      </p>
+
+      <!-- Query Loop -->
+      <p class="section-label"
+         data-zh="Query Loop：心跳" data-en="Query Loop: The Heartbeat">Query Loop: The Heartbeat</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Agent 系統的運作不是一次 API call，而是一個持續的執行迴圈。Claude Code 的核心是 queryLoop()，這個迴圈在每次迭代前先做輸入治理（預算、hooks、歷史修剪、context 壓縮），然後進行模型呼叫，再處理輸出。"
+         data-en="An agent system does not operate through a single API call; it runs as a continuous execution loop. The core of Claude Code is queryLoop(), which performs input governance before each iteration (budget checks, hooks, history trimming, context compaction), then makes the model call, then handles the output.">
+        An agent system does not operate through a single API call; it runs as a continuous execution loop. The core of Claude Code is queryLoop(), which performs input governance before each iteration (budget checks, hooks, history trimming, context compaction), then makes the model call, then handles the output.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="這裡有個重要的認知轉換：模型呼叫只是迴圈中的一個階段，不是迴圈本身。「心跳」在迴圈，不在模型。"
+         data-en="There is an important conceptual shift here: the model call is just one stage within the loop, not the loop itself. The heartbeat lives in the loop, not in the model.">
+        There is an important conceptual shift here: the model call is just one stage within the loop, not the loop itself. The heartbeat lives in the loop, not in the model.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="這個迴圈還負責處理中斷：當使用者按下 Escape，或工具執行失敗，迴圈必須維持帳本一致性（ledger closure），確保系統狀態在中斷後仍然可恢復。「能夠中斷」和「中斷後能繼續」是兩個不同的設計目標，Harness Engineering 要求兩者兼顧。"
+         data-en="The loop also handles interruptions: when the user presses Escape, or when a tool execution fails, the loop must maintain ledger closure, ensuring system state remains recoverable after an interruption. Being interruptible and being resumable after interruption are two different design goals, and Harness Engineering requires both.">
+        The loop also handles interruptions: when the user presses Escape, or when a tool execution fails, the loop must maintain ledger closure, ensuring system state remains recoverable after an interruption. Being interruptible and being resumable after interruption are two different design goals, and Harness Engineering requires both.
+      </p>
+
+      <!-- 工具治理 -->
+      <p class="section-label"
+         data-zh="工具治理：受管理的執行介面" data-en="Tool Governance: Managed Execution Interfaces">Tool Governance: Managed Execution Interfaces</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="工具是由 runtime 管理的受控執行介面，而不是模型能力的延伸。這個區別至關重要。"
+         data-en="Tools are controlled execution interfaces managed by the runtime, not extensions of model capability. This distinction is critical.">
+        Tools are controlled execution interfaces managed by the runtime, not extensions of model capability. This distinction is critical.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="在 Claude Code 的工具系統中，每個工具呼叫的結果是一個 runtime 語義：allow、deny、或 ask（需要使用者確認）。這不是布林值的允許或拒絕，而是一個帶有語義的決策結果。工具執行前先查詢權限，排程先於平行執行。"
+         data-en="In Claude Code's tool system, the result of each tool call is a runtime semantic: allow, deny, or ask (requiring user confirmation). This is a decision outcome with semantic meaning, not a boolean permit-or-block. Permission is checked before execution, and scheduling precedes parallelism.">
+        In Claude Code's tool system, the result of each tool call is a runtime semantic: allow, deny, or ask (requiring user confirmation). This is a decision outcome with semantic meaning, not a boolean permit-or-block. Permission is checked before execution, and scheduling precedes parallelism.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Bash 是所有工具中規則最嚴格的，因為它是最危險的介面。這個設計邏輯可以推廣：風險越高的介面，需要越密集的約束。Harness Engineering 的工具治理追求可控的執行秩序，而不是能力最大化。"
+         data-en="Bash is the most strictly governed of all tools because it is the most dangerous interface. This design logic generalizes: higher-risk interfaces require denser constraints. Tool governance in Harness Engineering optimizes for controlled execution order, not for maximum capability.">
+        Bash is the most strictly governed of all tools because it is the most dangerous interface. This design logic generalizes: higher-risk interfaces require denser constraints. Tool governance in Harness Engineering optimizes for controlled execution order, not for maximum capability.
+      </p>
+
+      <!-- Context 治理 -->
+      <p class="section-label"
+         data-zh="Context 治理：工作記憶的預算" data-en="Context Governance: Budgeting Working Memory">Context Governance: Budgeting Working Memory</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Context 是模型的工作記憶，不是垃圾抽屜。這個比喻的重點不在「整潔」，而在「資源有限」。"
+         data-en="Context is the model's working memory, not a junk drawer. The key point of this comparison is not tidiness; it is that the resource is finite.">
+        Context is the model's working memory, not a junk drawer. The key point of this comparison is not tidiness; it is that the resource is finite.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="CLAUDE.md 是長生命週期指令，負責存放跨 session 穩定的知識。它和 ad hoc 的對話訊息屬於不同層次，不能混在一起。MEMORY.md 是索引，告訴系統「去哪找什麼」，它本身不是記憶的儲存體。"
+         data-en="CLAUDE.md holds long-lifecycle instructions: knowledge that stays stable across sessions. It belongs to a different layer from ad hoc conversation messages and must never be mixed with them. MEMORY.md is an index that tells the system where to find what; it is not a memory store itself.">
+        CLAUDE.md holds long-lifecycle instructions: knowledge that stays stable across sessions. It belongs to a different layer from ad hoc conversation messages and must never be mixed with them. MEMORY.md is an index that tells the system where to find what; it is not a memory store itself.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Autocompact（自動壓縮）是預算治理，不只是壓縮。它的邏輯是：先治理（決定什麼值得保留），再壓縮（釋放空間）。許多第三方系統宣稱支援 context compaction，但其實只是把更多文字塞進 prompt 再截斷，這是「尚未治理的 context」，不是真正的 context 治理。"
+         data-en="Autocompact is budget governance, not just compression. The logic is: first govern (decide what is worth keeping), then compress (reclaim space). Many third-party systems claim to support context compaction but in practice just stuff more text into the prompt and then truncate. That is ungoverned context, not real context governance.">
+        Autocompact is budget governance, not just compression. The logic is: first govern (decide what is worth keeping), then compress (reclaim space). Many third-party systems claim to support context compaction but in practice just stuff more text into the prompt and then truncate. That is ungoverned context, not real context governance.
+      </p>
+
+      <!-- 錯誤路徑 -->
+      <p class="section-label"
+         data-zh="錯誤路徑是主路徑" data-en="The Error Path Is the Main Path">The Error Path Is the Main Path</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="在傳統軟體設計中，錯誤處理是 catch block 裡的附帶工作。Harness Engineering 顛覆這個假設：錯誤路徑是主路徑，Recovery 設計在主流程內。"
+         data-en="In traditional software design, error handling is a secondary concern relegated to catch blocks. Harness Engineering inverts this assumption: the error path is the main path, and recovery is designed into the primary flow.">
+        In traditional software design, error handling is a secondary concern relegated to catch blocks. Harness Engineering inverts this assumption: the error path is the main path, and recovery is designed into the primary flow.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="「prompt too long」不是例外狀況，而是季節性事件。長時間運行的 agent session 必然會遇到 context 滿溢、工具呼叫失敗、網路超時。Recovery 按破壞力由低到高漸進：先 flush（清除暫存），再 context collapse（強制壓縮），再 reactive compact（反應式整理）。"
+         data-en="A 'prompt too long' error is not an exception; it is a seasonal event. Long-running agent sessions will inevitably encounter context overflow, failed tool calls, and network timeouts. Recovery escalates by destructiveness: first a flush (clear buffers), then context collapse (forced compaction), then reactive compact (reactive reorganization).">
+        A "prompt too long" error is not an exception; it is a seasonal event. Long-running agent sessions will inevitably encounter context overflow, failed tool calls, and network timeouts. Recovery escalates by destructiveness: first a flush (clear buffers), then context collapse (forced compaction), then reactive compact (reactive reorganization).
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Recovery 本身也可能失敗，所以 recovery 需要自己的 recovery。這個看起來像繞口令的原則指向一個務實的設計目標：系統的目標是繼續工作，而不是優雅地道歉然後停下來。"
+         data-en="Recovery itself can fail, so recovery needs its own recovery. What sounds like a tongue twister points to a practical design goal: the system's objective is to keep working, not to apologize gracefully and stop.">
+        Recovery itself can fail, so recovery needs its own recovery. What sounds like a tongue twister points to a practical design goal: the system's objective is to keep working, not to apologize gracefully and stop.
+      </p>
+
+      <!-- 多 Agent 驗證 -->
+      <p class="section-label"
+         data-zh="多 Agent 與獨立驗證" data-en="Multi-Agent and Independent Verification">Multi-Agent and Independent Verification</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="多 agent 架構解決的核心問題是不確定性的分區，而不是加快速度或增加工作量。當一個任務的不確定性太高，單一 agent 無法可靠地完成時，分派多個 agent 各自負責一部分，可以把不確定性限制在更小的範圍內。"
+         data-en="The core problem that multi-agent architecture solves is partitioning uncertainty, not increasing speed or throughput. When a task carries too much uncertainty for a single agent to handle reliably, assigning multiple agents to separate portions confines that uncertainty to smaller, more manageable scopes.">
+        The core problem that multi-agent architecture solves is partitioning uncertainty, not increasing speed or throughput. When a task carries too much uncertainty for a single agent to handle reliably, assigning multiple agents to separate portions confines that uncertainty to smaller, more manageable scopes.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="驗證必須獨立於實作。這是一個聽起來顯然但執行起來常被跳過的原則：讓實作者同時承擔驗證責任，等於讓人自我背書。Coordinator 模式中，synthesis（整合不同 agent 的結論）是稀缺能力，通常需要專門設計。"
+         data-en="Verification must be independent of implementation. This principle sounds obvious but is frequently skipped in practice: making the implementor also responsible for verification is equivalent to self-endorsement. In coordinator patterns, synthesis (integrating conclusions from different agents) is a scarce capability that usually requires dedicated design.">
+        Verification must be independent of implementation. This principle sounds obvious but is frequently skipped in practice: making the implementor also responsible for verification is equivalent to self-endorsement. In coordinator patterns, synthesis (integrating conclusions from different agents) is a scarce capability that usually requires dedicated design.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Forked agent 的首要原則是 cache safety：在共享狀態之前，先降低汙染的可能性。多 agent 系統一旦共享了被汙染的 context，修復成本會急速上升。"
+         data-en="The primary principle for forked agents is cache safety: reduce the chance of contamination before sharing state. Once a multi-agent system has propagated a contaminated context, the cost of recovery rises sharply.">
+        The primary principle for forked agents is cache safety: reduce the chance of contamination before sharing state. Once a multi-agent system has propagated a contaminated context, the cost of recovery rises sharply.
+      </p>
+
+      <!-- 兩條實踐路徑 -->
+      <p class="section-label"
+         data-zh="兩條實踐路徑" data-en="Two Approaches in Practice">Two Approaches in Practice</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Harness Engineering 有兩條具代表性的實踐路徑，以 Claude Code 和 OpenAI Codex 為標本。兩者的共識不在於「都能呼叫工具」，而在於「都不願將模型當作自由執行者」。它們的分歧在於秩序安置的位置。"
+         data-en="Harness Engineering has two representative approaches in practice, exemplified by Claude Code and OpenAI Codex. Their shared commitment is not that both can call tools; it is that neither is willing to treat the model as a free agent. Their divergence lies in where they place order.">
+        Harness Engineering has two representative approaches in practice, exemplified by Claude Code and OpenAI Codex. Their shared commitment is not that both can call tools; it is that neither is willing to treat the model as a free agent. Their divergence lies in where they place order.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Claude Code 偏向 runtime discipline（運行時紀律）：控制平面是動態組裝的，連續性壓縮進 query loop，工具治理在 runtime 當場判斷。它像一支現場急救隊，或是一位熟悉地形的老員工，靠持續的現場判斷維持秩序。"
+         data-en="Claude Code leans toward runtime discipline: the control plane is assembled dynamically, continuity is compressed into the query loop, and tool governance is resolved at runtime. It resembles a field emergency team, or a seasoned employee who knows the terrain, maintaining order through continuous on-site judgment.">
+        Claude Code leans toward runtime discipline: the control plane is assembled dynamically, continuity is compressed into the query loop, and tool governance is resolved at runtime. It resembles a field emergency team, or a seasoned employee who knows the terrain, maintaining order through continuous on-site judgment.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Codex 偏向 structured control（結構化控制）：控制平面是顯式的 fragment 結構（AGENTS.md 帶 scope 和 priority），連續性分散到 thread、rollout、state bridge 等顯式基礎設施，工具治理通過 policy language 先寫規則再檢查合規。它像一個有檔案室的調度中心，或是一位制度本能強的新人，靠明確的結構定義秩序。"
+         data-en="Codex leans toward structured control: the control plane is an explicit fragment architecture (AGENTS.md with scope and priority), continuity is distributed across explicit infrastructure like threads, rollouts, and state bridges, and tool governance works through a policy language that specifies rules before checking compliance. It resembles a dispatch center with a records room, or a methodical new hire with strong institutional instincts, maintaining order through explicit structure.">
+        Codex leans toward structured control: the control plane is an explicit fragment architecture (AGENTS.md with scope and priority), continuity is distributed across explicit infrastructure like threads, rollouts, and state bridges, and tool governance works through a policy language that specifies rules before checking compliance. It resembles a dispatch center with a records room, or a methodical new hire with strong institutional instincts, maintaining order through explicit structure.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="兩條路徑都有效。選擇的關鍵問題是：你的團隊在對抗什麼不確定性，願意在哪裡錨定秩序？靈活性和明確性不是天敵，它們只是把秩序安置在不同的地方。"
+         data-en="Both approaches work. The key question for choosing between them is: what kind of uncertainty is your team fighting against, and where are you willing to anchor your order? Flexibility and explicitness are not opposites; they place order in different locations.">
+        Both approaches work. The key question for choosing between them is: what kind of uncertainty is your team fighting against, and where are you willing to anchor your order? Flexibility and explicitness are not opposites; they place order in different locations.
+      </p>
+
+      <!-- 團隊維度 -->
+      <p class="section-label"
+         data-zh="團隊制度比個人技巧重要" data-en="Team Conventions Beat Individual Skill">Team Conventions Beat Individual Skill</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Harness Engineering 最後一個原則也是最常被低估的：個人的 agent 使用技巧無法直接轉化為團隊的可複用能力。一個專家工程師摸索出的 prompt 技巧，如果沒有被結晶為可共享的制度，離開這個人之後就消失了。"
+         data-en="The final principle of Harness Engineering is also the most frequently underestimated: individual skill at using agents does not directly translate into reusable team capability. The prompt techniques a senior engineer develops through trial and error will disappear when that person leaves, unless they have been crystallized into shared conventions.">
+        The final principle of Harness Engineering is also the most frequently underestimated: individual skill at using agents does not directly translate into reusable team capability. The prompt techniques a senior engineer develops through trial and error will disappear when that person leaves, unless they have been crystallized into shared conventions.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="CLAUDE.md 之所以重要，是因為它穩定、分層、低爭議。它是讓 harness 知識沉澱為可複用資產的地方。Skills（工作流模組）適合封裝可重複使用的操作流程。Approval 按風險分層最有效，hooks 通常屬於推廣後期才需要的工具。"
+         data-en="CLAUDE.md matters because it is stable, layered, and low-friction: the place where harness knowledge sediments into reusable assets. Skills (workflow modules) are appropriate for encapsulating repeatable operational flows. Risk-tiered approval is the most effective governance structure, and hooks are typically a tool for later in a rollout rather than day one.">
+        CLAUDE.md matters because it is stable, layered, and low-friction: the place where harness knowledge sediments into reusable assets. Skills (workflow modules) are appropriate for encapsulating repeatable operational flows. Risk-tiered approval is the most effective governance structure, and hooks are typically a tool for later in a rollout rather than day one.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-12" style="color: var(--text-3);"
+         data-zh="最終，Harness Engineering 要解決的問題不是「模型夠不夠聰明」，而是「我們有沒有建立足夠好的系統來讓模型在工程環境中可靠行動」。這是一個工程問題，不是一個模型問題。"
+         data-en="Ultimately, Harness Engineering is not about whether the model is smart enough. It is about whether we have built a good enough system to let the model act reliably in an engineering environment. That is an engineering problem, not a model problem.">
+        Ultimately, Harness Engineering is not about whether the model is smart enough. It is about whether we have built a good enough system to let the model act reliably in an engineering environment. That is an engineering problem, not a model problem.
+      </p>
+
+      <!-- 十大原則總結 -->
+      <p class="section-label"
+         data-zh="十大原則" data-en="Ten Principles">Ten Principles</p>
+
+      <ol class="space-y-3 text-sm" style="color: var(--text-3);">
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">01</span>
+          <span data-zh="把模型當成不穩定元件，不是隊友。系統必須圍繞不穩定來設計。"
+                data-en="Treat the model as an unstable component, not a teammate. The system must be designed around instability.">
+            Treat the model as an unstable component, not a teammate. The system must be designed around instability.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">02</span>
+          <span data-zh="Prompt 是控制平面的一部分：分層制度文本，不是人設裝飾。"
+                data-en="The prompt is part of the control plane: layered behavioral policy, not a persona script.">
+            The prompt is part of the control plane: layered behavioral policy, not a persona script.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">03</span>
+          <span data-zh="Query loop 是 agent 系統的心跳。Agent 靠持續迴圈運行，不是靠單次 API call。"
+                data-en="The query loop is the heartbeat of the agent system. Agents run through a continuous loop, not a single API call.">
+            The query loop is the heartbeat of the agent system. Agents run through a continuous loop, not a single API call.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">04</span>
+          <span data-zh="工具是受管理的執行介面。權限先於能力，排程先於平行。"
+                data-en="Tools are managed execution interfaces. Permission precedes capability, scheduling precedes parallelism.">
+            Tools are managed execution interfaces. Permission precedes capability, scheduling precedes parallelism.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">05</span>
+          <span data-zh="Context 是工作記憶：資源有限，需要預算治理。"
+                data-en="Context is working memory: the resource is finite and requires budget governance.">
+            Context is working memory: the resource is finite and requires budget governance.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">06</span>
+          <span data-zh="錯誤路徑是主路徑。Recovery 設計在主流程內，不是 catch block 的附帶。"
+                data-en="The error path is the main path. Recovery is designed into the primary flow, not appended as a catch block.">
+            The error path is the main path. Recovery is designed into the primary flow, not appended as a catch block.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">07</span>
+          <span data-zh="Recovery 應優化持續執行。目標是繼續工作，不是優雅道歉。"
+                data-en="Recovery should optimize for continued execution. The goal is to keep working, not to fail gracefully.">
+            Recovery should optimize for continued execution. The goal is to keep working, not to fail gracefully.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">08</span>
+          <span data-zh="多 agent 分區不確定性，靠角色分離和獨立驗證，不是增加人頭。"
+                data-en="Multi-agent systems partition uncertainty through role separation and independent verification, not by adding headcount.">
+            Multi-agent systems partition uncertainty through role separation and independent verification, not by adding headcount.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">09</span>
+          <span data-zh="驗證必須獨立。實作者不能同時是認證者。"
+                data-en="Verification must be independent. The implementor cannot also be the verifier.">
+            Verification must be independent. The implementor cannot also be the verifier.
+          </span>
+        </li>
+        <li class="flex gap-3">
+          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">10</span>
+          <span data-zh="團隊制度比個人技巧更重要。規則要結晶為可重用的機構知識。"
+                data-en="Team conventions beat individual skill. Rules must be crystallized into reusable institutional knowledge.">
+            Team conventions beat individual skill. Rules must be crystallized into reusable institutional knowledge.
+          </span>
+        </li>
+      </ol>
+
+    </div>
+  </section>
+</Layout>
