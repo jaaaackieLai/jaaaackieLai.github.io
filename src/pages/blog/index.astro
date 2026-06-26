@@ -1,14 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
+// 自動統計每個主題下的文章數量:掃描 <topic>/<slug>.astro,排除各主題的 index.astro。
+// 新增或刪除文章檔案時,數量會自動更新,不需手動維護。
+const articleFiles = import.meta.glob('./*/*.astro');
+const articleCounts: Record<string, number> = {};
+for (const path of Object.keys(articleFiles)) {
+  const match = path.match(/^\.\/([^/]+)\/([^/]+)\.astro$/);
+  if (!match || match[2] === 'index') continue;
+  const slug = match[1];
+  articleCounts[slug] = (articleCounts[slug] ?? 0) + 1;
+}
+
 const topics = [
   {
     slug: 'agentic-ai',
     title: 'Agentic AI',
     desc: { zh: '探索 AI Agent 系統的設計原則、multi-agent 協作架構，以及如何在實際應用中落地。',
             en: 'Exploring the design principles of AI Agent systems, multi-agent collaboration architectures, and how to deploy them in real-world applications.' },
-    tags: ['LLM', 'Agent', 'Multi-Agent', 'RAG'],
-    articles: 3,
+    tags: ['LLM', 'Multi-Agent', "Harness", "Loop"],
     articlesLabel: { zh: '篇', en: 'articles' },
   },
   {
@@ -17,13 +27,12 @@ const topics = [
     desc: { zh: '從 CNN 到 Transformer，系統性整理現代深度學習核心架構的設計思路與原理。',
             en: 'From CNNs to Transformers, a systematic look at the design principles behind modern deep learning architectures.' },
     tags: ['Transformer', 'CNN', 'ResNet', 'Neural Networks'],
-    articles: 3,
     articlesLabel: { zh: '篇', en: 'articles' },
   },
 ];
 ---
 
-<Layout title="部落格 — Jackie">
+<Layout title="部落格">
   <section class="max-w-2xl mx-auto px-6 pt-20 pb-24">
     <div class="mb-12">
       <p class="section-label" data-zh="所有文章" data-en="All Posts">All Posts</p>
@@ -37,7 +46,7 @@ const topics = [
               <h2 class="text-sm font-medium transition-colors duration-150 group-hover:opacity-70"
                   style="color: var(--text-1);">{topic.title}</h2>
               <span class="text-[11px] font-mono" style="color: var(--text-5);">
-                {topic.articles}&nbsp;<span data-zh={topic.articlesLabel.zh} data-en={topic.articlesLabel.en}>{topic.articlesLabel.en}</span>
+                {articleCounts[topic.slug] ?? 0}&nbsp;<span data-zh={topic.articlesLabel.zh} data-en={topic.articlesLabel.en}>{topic.articlesLabel.en}</span>
               </span>
             </div>
             <p class="text-sm leading-[1.75] mb-3" style="color: var(--text-3);"

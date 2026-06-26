@@ -14,7 +14,10 @@ import Layout from '../layouts/Layout.astro';
 
       <!-- 名字與簡介 -->
       <div class="flex-1 pt-1">
-        <h1 class="text-[44px] font-light tracking-tight leading-none mb-2" style="color: var(--text-1);">Jackie</h1>
+        <div class="flex items-baseline gap-2 mb-2">
+          <h1 class="text-[44px] font-light tracking-tight leading-none" style="color: var(--text-1);">Jackie Lai</h1>
+          <span class="text-[14px]" style="color: var(--text-4);" role="img" aria-label="Taiwan flag">&#x1F1F9;&#x1F1FC;</span>
+        </div>
         <p class="text-sm tracking-wide mb-6" style="color: var(--text-4);"
            data-zh="努力成為優秀的軟體工程師"
            data-en="Striving to be an excellent software engineer">
@@ -61,13 +64,13 @@ import Layout from '../layouts/Layout.astro';
     <div class="border-t" style="border-color: var(--border);"></div>
 
     <!-- 工作經歷 -->
-    <section class="mt-14 mb-14">
+    <!-- <section class="mt-14 mb-14">
       <p class="section-label" data-zh="工作經歷" data-en="Experience">Experience</p>
   
-    </section>
+    </section> -->
 
     <!-- 學歷 -->
-    <section>
+    <section class="mt-14 mb-14">
       <p class="section-label" data-zh="學歷" data-en="Education">Education</p>
       <div>
         <div class="row-item">
