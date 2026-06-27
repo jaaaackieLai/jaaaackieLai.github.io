@@ -2,7 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 ---
 
-<Layout title="blog: Claude Code 初始化與設定" description="介紹如何設定 Claude Code 以及我自己安裝了那些好用的工具。">
+<Layout title="blog: Claude Code Setup & Configuration" description="介紹如何設定 Claude Code 以及我自己安裝了那些好用的工具。">
   <section class="max-w-2xl mx-auto px-6 pt-16 pb-24">
     <div class="mb-10">
       <a href="/blog/agentic-ai" class="inline-flex items-center gap-1.5 text-sm transition-colors mb-8"
@@ -13,23 +13,143 @@ import Layout from '../../../layouts/Layout.astro';
         Agentic AI
       </a>
 
-      <p class="section-label">Agentic AI · 01</p>
-      <h1 class="text-3xl font-light tracking-tight mb-4" style="color: var(--text-1);">
-        Claude Code 初始化與設定
-      </h1>
-      <p class="text-lg leading-relaxed" style="color: var(--text-3);">
-        介紹如何設定 Claude Code 以及我自己安裝了那些好用的工具。
+      <p class="section-label">Agentic AI · 03</p>
+      <h1 class="text-3xl font-light tracking-tight mb-4" style="color: var(--text-1);"
+          data-zh="Claude Code 初始化與設定" data-en="Claude Code Setup &amp; Configuration">Claude Code Setup &amp; Configuration</h1>
+      <p class="text-lg leading-relaxed" style="color: var(--text-3);"
+         data-zh="介紹如何設定 Claude Code 以及我自己安裝了那些好用的工具。"
+         data-en="How to set up Claude Code and the tools I personally installed to supercharge the workflow.">
+        How to set up Claude Code and the tools I personally installed to supercharge the workflow.
       </p>
 
       <div class="flex items-center gap-4 mt-6 text-xs font-mono" style="color: var(--text-5);">
-        <span>2026-06-20</span>
+        <span>2026-06-27</span>
         <span>·</span>
-        <span>10 分鐘</span>
+        <span data-zh="1 分鐘" data-en="1 min">1 min</span>
       </div>
     </div>
 
     <div class="border-t pt-10" style="border-color: var(--border);">
-      <p class="text-lg leading-relaxed" style="color: var(--text-4);">內容撰寫中。</p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Claude Code 現在已經是蔚為風行的工具，用來幫助人們寫程式、執行日常任務、修改檔案等工作。這篇文章適合給那些還未使用 Agentic AI 幫助自己工作的人閱讀，同時記錄自己的設定模式。"
+         data-en="Claude Code has become a widely adopted tool for writing code, handling daily tasks, and editing files. This article is for those who have not yet used Agentic AI to assist their work, and documents my personal setup.">
+        Claude Code has become a widely adopted tool for writing code, handling daily tasks, and editing files. This article is for those who have not yet used Agentic AI to assist their work, and documents my personal setup.
+      </p>
+
+      <p class="section-label"
+         data-zh="Initialization" data-en="Initialization">Initialization</p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Claude Code 有兩種安裝方式：CLI（透過 npm 安裝的 terminal 工具）和 Desktop App（桌面應用程式）。兩者功能相同，認證共用，可以並存。"
+         data-en="Claude Code has two installation options: the CLI (a terminal tool installed via npm) and the Desktop App. Both offer the same functionality, share authentication, and can coexist.">
+        Claude Code has two installation options: the CLI (a terminal tool installed via npm) and the Desktop App. Both offer the same functionality, share authentication, and can coexist.
+      </p>
+
+      <p class="article-h2"
+         data-zh="Desktop App" data-en="Desktop App">Desktop App</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Desktop App 是最快的入門方式，不需要 Node.js 或 npm，直接下載安裝即可。"
+         data-en="The Desktop App is the fastest way to get started: no Node.js or npm required, just download and install.">
+        The Desktop App is the fastest way to get started: no Node.js or npm required, just download and install.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <span data-zh="Mac：從 " data-en="Mac: download the .dmg from ">Mac: download the .dmg from </span><a href="https://claude.ai/download" class="article-link">claude.ai/download</a><span data-zh="下載 .dmg，拖進 Applications 資料夾即完成。" data-en=" and drag it into the Applications folder."> and drag it into the Applications folder.</span>
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Windows：下載 .exe 安裝程式，安裝後從開始選單啟動。"
+         data-en="Windows: download the .exe installer and launch it from the Start menu after installation.">
+        Windows: download the .exe installer and launch it from the Start menu after installation.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="Desktop App 內建終端介面，行為和 CLI 版本一致。認證方式相同，Pro/Max 訂閱者用 OAuth 登入，API 金鑰用戶貼入 key 即可。如果已經裝了 CLI，兩者可以並存，不會衝突。"
+         data-en="The Desktop App has a built-in terminal interface with the same behavior as the CLI. Authentication works the same way: Pro/Max subscribers log in via OAuth, and API key users simply paste their key. If you already have the CLI installed, both can coexist without conflict.">
+        The Desktop App has a built-in terminal interface with the same behavior as the CLI. Authentication works the same way: Pro/Max subscribers log in via OAuth, and API key users simply paste their key. If you already have the CLI installed, both can coexist without conflict.
+      </p>
+
+      <p class="article-h2"
+         data-zh="CLI" data-en="CLI">CLI</p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="CLI 版本跑在任何 terminal 裡，適合需要整合進既有工作流的人，也是本文後續設定的基礎。不同平台的細節差異不少，尤其是 Windows 上有幾個地方容易踩坑。"
+         data-en="The CLI runs in any terminal and suits those who need to integrate Claude Code into an existing workflow. It is also the foundation for the setup sections that follow. Platform differences are notable, especially on Windows where there are a few easy pitfalls.">
+        The CLI runs in any terminal and suits those who need to integrate Claude Code into an existing workflow. It is also the foundation for the setup sections that follow. Platform differences are notable, especially on Windows where there are a few easy pitfalls.
+      </p>
+
+      <p class="article-h3"
+         data-zh="前置條件：Node.js" data-en="Prerequisites: Node.js">Prerequisites: Node.js</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Claude Code 透過 npm 安裝，先確認 Node.js 版本在 18 以上："
+         data-en="Claude Code is installed via npm. First confirm Node.js is version 18 or above:">
+        Claude Code is installed via npm. First confirm Node.js is version 18 or above:
+      </p>
+
+      <pre class="article-code"><code>node --version</code></pre>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);">
+        <span data-zh="還沒安裝的話，去 " data-en="If not installed, download the LTS release from ">If not installed, download the LTS release from </span><a href="https://nodejs.org" class="article-link">nodejs.org</a><span data-zh="下載 LTS 版本即可。" data-en=".">.</span>
+      </p>
+
+      <p class="article-h3"
+         data-zh="安裝" data-en="Installation">Installation</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="兩個平台的安裝指令一樣："
+         data-en="The installation command is the same on both platforms:">
+        The installation command is the same on both platforms:
+      </p>
+
+      <pre class="article-code"><code>npm install -g @anthropic-ai/claude-code</code></pre>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="安裝完後驗證："
+         data-en="Verify the installation:">
+        Verify the installation:
+      </p>
+
+      <pre class="article-code mb-10"><code>claude --version</code></pre>
+
+      <p class="article-h3"
+         data-zh="Windows" data-en="Windows">Windows</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Windows 版 Claude Code 以 PowerShell 作為預設 shell 工具。這表示 Claude 在 Windows 上執行的 shell 指令是 PowerShell 語法，不是 bash。"
+         data-en="Claude Code on Windows uses PowerShell as the default shell tool. This means Claude executes shell commands in PowerShell syntax, not bash.">
+        Claude Code on Windows uses PowerShell as the default shell tool. This means Claude executes shell commands in PowerShell syntax, not bash.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+         data-zh="推薦使用 Windows Terminal。相較於舊版 cmd.exe，Windows Terminal 支援更好的字型渲染、多 tab、以及 ANSI 顏色輸出，長時間 session 舒適很多。"
+         data-en="Windows Terminal is recommended. Compared to the legacy cmd.exe, Windows Terminal offers better font rendering, multiple tabs, and ANSI color output, making long sessions much more comfortable.">
+        Windows Terminal is recommended. Compared to the legacy cmd.exe, Windows Terminal offers better font rendering, multiple tabs, and ANSI color output, making long sessions much more comfortable.
+      </p>
+
+      <p class="article-h3"
+         data-zh="Mac / Linux" data-en="Mac / Linux">Mac / Linux</p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Mac 和 Linux 的體驗幾乎相同，Claude Code 以 bash/zsh 作為 shell 工具，標準 Unix 指令都能直接用，不需要特別設定。"
+         data-en="Mac and Linux offer nearly identical experiences. Claude Code uses bash/zsh as the shell tool, and standard Unix commands work directly with no additional configuration.">
+        Mac and Linux offer nearly identical experiences. Claude Code uses bash/zsh as the shell tool, and standard Unix commands work directly with no additional configuration.
+      </p>
+
+      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+         data-zh="Linux 上的 npm 全域安裝權限問題。有時會碰到 EACCES 錯誤，原因是 npm global prefix 在 /usr/local 下沒有寫入權限。把 npm global 目錄移到 home 就能解決："
+         data-en="Linux npm global install permission issue: you may encounter an EACCES error because npm's global prefix directory under /usr/local lacks write permission. Moving the npm global directory to your home folder resolves this:">
+        Linux npm global install permission issue: you may encounter an EACCES error because npm's global prefix directory under /usr/local lacks write permission. Moving the npm global directory to your home folder resolves this:
+      </p>
+
+      <pre class="article-code"><code>mkdir -p ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+npm install -g @anthropic-ai/claude-code</code></pre>
+
     </div>
   </section>
 </Layout>
