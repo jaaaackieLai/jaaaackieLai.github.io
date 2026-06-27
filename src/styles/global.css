@@ -124,6 +124,20 @@ html.dark {
     color: var(--accent);
   }
 
+  /* ── 文章內圍欄程式碼區塊(雙語段落為純文字,僅 code block 需樣式) ── */
+  .article-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    background: var(--seg-track);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    line-height: 1.6;
+  }
+
   /* ── Segmented toggle control ── */
   .seg-ctrl {
     position: relative;
