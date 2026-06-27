@@ -1,35 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { topics } from '../../data/topics';
+import { getArticleCount } from '../../lib/articles';
 
-// 自動統計每個主題下的文章數量:掃描 <topic>/<slug>.astro,排除各主題的 index.astro。
-// 新增或刪除文章檔案時,數量會自動更新,不需手動維護。
-const articleFiles = import.meta.glob('./*/*.astro');
-const articleCounts: Record<string, number> = {};
-for (const path of Object.keys(articleFiles)) {
-  const match = path.match(/^\.\/([^/]+)\/([^/]+)\.astro$/);
-  if (!match || match[2] === 'index') continue;
-  const slug = match[1];
-  articleCounts[slug] = (articleCounts[slug] ?? 0) + 1;
-}
-
-const topics = [
-  {
-    slug: 'agentic-ai',
-    title: 'Agentic AI',
-    desc: { zh: '探索 AI Agent 系統的設計原則、multi-agent 協作架構，以及如何在實際應用中落地。',
-            en: 'Exploring the design principles of AI Agent systems, multi-agent collaboration architectures, and how to deploy them in real-world applications.' },
-    tags: ['LLM', 'Multi-Agent', "Harness", "Loop"],
-    articlesLabel: { zh: '篇', en: 'articles' },
-  },
-  {
-    slug: 'deep-learning',
-    title: 'Deep Learning',
-    desc: { zh: '從 CNN 到 Transformer，系統性整理現代深度學習核心架構的設計思路與原理。',
-            en: 'From CNNs to Transformers, a systematic look at the design principles behind modern deep learning architectures.' },
-    tags: ['Transformer', 'CNN', 'ResNet', 'Neural Networks'],
-    articlesLabel: { zh: '篇', en: 'articles' },
-  },
-];
+// topic 設定集中在 src/data/topics.ts;文章數由 src/lib/articles.ts 自動統計
+// (markdown 文章 + legacy 文章),新增或刪除文章時自動更新。
 ---
 
 <Layout title="部落格">
@@ -44,15 +19,15 @@ const topics = [
           <div class="flex-1 min-w-0">
             <div class="flex items-baseline gap-3 mb-2">
               <h2 class="text-sm font-medium transition-colors duration-150 group-hover:opacity-70"
-                  style="color: var(--text-1);">{topic.title}</h2>
+                  style="color: var(--text-1);">{topic.name}</h2>
               <span class="text-[11px] font-mono" style="color: var(--text-5);">
-                {articleCounts[topic.slug] ?? 0}&nbsp;<span data-zh={topic.articlesLabel.zh} data-en={topic.articlesLabel.en}>{topic.articlesLabel.en}</span>
+                {getArticleCount(topic.slug)}&nbsp;<span data-zh="篇" data-en="articles">articles</span>
               </span>
             </div>
             <p class="text-sm leading-[1.75] mb-3" style="color: var(--text-3);"
-               data-zh={topic.desc.zh} data-en={topic.desc.en}>{topic.desc.en}</p>
+               data-zh={topic.card.desc.zh} data-en={topic.card.desc.en}>{topic.card.desc.en}</p>
             <div class="flex flex-wrap gap-1.5">
-              {topic.tags.map((tag) => (
+              {topic.card.tags.map((tag) => (
                 <span class="tag">{tag}</span>
               ))}
             </div>
