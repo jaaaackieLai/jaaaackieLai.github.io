@@ -63,6 +63,60 @@ html.dark {
     @apply text-sm font-medium uppercase tracking-[0.2em] mb-5;
   }
 
+  .article-h2 {
+    color: var(--text-1);
+    border-left: 2px solid var(--accent);
+    @apply text-lg font-light leading-relaxed mb-4 pl-3;
+  }
+
+  .article-h3 {
+    color: var(--text-2);
+    @apply text-lg font-medium leading-relaxed mb-3;
+  }
+
+  .article-h3::before {
+    content: '›';
+    color: var(--accent);
+    margin-right: 0.375rem;
+  }
+
+  .article-link {
+    color: var(--accent);
+    @apply underline decoration-1 underline-offset-2 transition-colors duration-150;
+  }
+  .article-link:hover { color: var(--accent-hover); }
+
+  .article-strong {
+    color: var(--text-2);
+    @apply font-medium;
+  }
+
+  .article-formula {
+    color: var(--text-2);
+    @apply my-6 overflow-x-auto text-sm;
+  }
+
+  .article-formula mjx-container,
+  mjx-container {
+    color: inherit;
+  }
+
+  .article-steps {
+    color: var(--text-3);
+    @apply my-5 space-y-0 text-sm;
+  }
+
+  .article-step {
+    border-top: 1px solid var(--border);
+    @apply grid grid-cols-[1.75rem_1fr] gap-3 py-3 first:border-t-0;
+  }
+
+  .article-step-index {
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    @apply font-mono text-xs leading-6;
+  }
+
   .tag {
     color: var(--tag-text);
     border-color: var(--tag-border);
@@ -136,7 +190,24 @@ html.dark {
     overflow-x: auto;
     margin: 1.5rem 0;
     line-height: 1.6;
+    position: relative;
   }
+
+  .copy-code-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-4);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .copy-code-btn:hover { color: var(--accent); }
 
   /* ── Segmented toggle control ── */
   .seg-ctrl {
