@@ -35,6 +35,13 @@ blog/
 └── tailwind.config.mjs                  # Tailwind config (fonts, warm brass accent color)
 ```
 
+# Project Rules
+
+Before changing content or previewing the site, read the relevant project rules:
+
+- `.codex\rules\blog-content-rules.md` - content style, structure, and article publishing conventions.
+- `.codex\rules\local-preview-and-verify.md` - local preview, build, and verification workflow.
+
 ## Content data flow
 
 - `src/data/topics.ts` and `src/data/articles.ts` hold all topic and article metadata. Pages import these (plus the helpers in `src/lib/articles.ts`) to render the blog index and topic listings, so adding a topic or article is a data edit, not a page rewrite.

@@ -7,6 +7,6 @@ dist/
 .DS_Store
 DEV.md
 .claude/
-
+.codex/
 # Blog 文章原稿(由我轉成 src/pages/blog 的成品 .md;source 不進 git)
 src/page-content/
