@@ -13,19 +13,6 @@ import type { ArticleMeta } from '../lib/articles';
 export const articles: ArticleMeta[] = [
   {
     topic: 'agentic-ai',
-    slug: 'claude-code-setup',
-    url: '/blog/agentic-ai/claude-code-setup',
-    title: { zh: 'Claude Code 初始化與設定', en: 'Claude Code Setup & Configuration' },
-    date: '2026-06-20',
-    readTime: 10,
-    desc: {
-      zh: '介紹如何設定 Claude Code 以及我自己安裝了那些好用的工具。',
-      en: 'How to set up Claude Code and the tools I personally installed to supercharge the workflow.',
-    },
-    tags: ['Claude Code', 'Setup', 'Tools'],
-  },
-  {
-    topic: 'agentic-ai',
     slug: 'harness-engineering',
     url: '/blog/agentic-ai/harness-engineering',
     title: { zh: 'Harness Engineering', en: 'Harness Engineering' },
@@ -51,14 +38,30 @@ export const articles: ArticleMeta[] = [
     tags: ['Agentic Loop', 'Autonomy', 'Long-horizon Tasks'],
   },
   {
+    topic: 'agentic-ai',
+    slug: 'claude-code-setup',
+    url: '/blog/agentic-ai/claude-code-setup',
+    title: { zh: 'Claude Code 初始化與設定', en: 'Claude Code Setup & Configuration' },
+    date: '2026-06-27',
+    readTime: 1,
+    desc: {
+      zh: '介紹如何設定 Claude Code 以及我自己安裝了那些好用的工具。',
+      en: 'How to set up Claude Code and the tools I personally installed to supercharge the workflow.',
+    },
+    tags: ['Claude Code', 'Setup', 'Tools'],
+  },
+  {
     topic: 'deep-learning',
     slug: 'transformer',
     url: '/blog/deep-learning/transformer',
     title: { zh: 'Transformer', en: 'Transformer' },
     date: '2026-06-27',
-    readTime: 1,
-    desc: { zh: '', en: '' },
-    tags: ['Self-Attention', 'NLP'],
+    readTime: 9,
+    desc: {
+      zh: '詳細解析 Attention is all you need 提出的 Transformer',
+      en: 'A detailed walkthrough of the Transformer proposed in Attention Is All You Need.',
+    },
+    tags: ['Attention', 'NLP'],
   },
   {
     topic: 'deep-learning',
