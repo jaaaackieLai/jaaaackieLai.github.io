@@ -39,3 +39,13 @@ blog/
 
 - `src/data/topics.ts` and `src/data/articles.ts` hold all topic and article metadata. Pages import these (plus the helpers in `src/lib/articles.ts`) to render the blog index and topic listings, so adding a topic or article is a data edit, not a page rewrite.
 - Article pages are `.astro` files (cannot be scanned for frontmatter), so each article's metadata is registered in `src/data/articles.ts`. The `blog-convert` skill maintains this when converting `src/page-content/*.md` drafts into built `.astro` articles.
+
+# Keep Claude and Codex Instructions in Sync
+
+When updating any file or directory listed in one column, update the matching item in the other column in the same change.
+
+| Area | Claude | Codex |
+| --- | --- | --- |
+| Agent settings | [CLAUDE.md](CLAUDE.md) | [AGENTS.md](AGENTS.md) |
+| Rules | [.claude/rules](.claude/rules) | [.codex/rules](.codex/rules) |
+| Skills | [.claude/skills](.claude/skills) | [.codex/skills](.codex/skills) |
