@@ -1,0 +1,73 @@
+---
+import Layout from './Layout.astro';
+import { getTopic } from '../data/topics';
+import { articles } from '../data/articles';
+import { getTopicArticles } from '../lib/articles';
+
+// 文章頁共用外框:返回連結、系列標籤、標題、描述、日期/閱讀時間列。
+// metadata 一律從 src/data/articles.ts 讀取(單一真相來源),
+// 系列編號由同 topic 文章依日期排序後的位置推導,不在頁面手寫。
+interface Props {
+  slug: string;
+  math?: boolean; // 內文含公式的文章傳 true,Layout 才載入 MathJax
+}
+
+const { slug, math = false } = Astro.props;
+
+const meta = articles.find((a) => a.slug === slug);
+if (!meta) throw new Error(`ArticleLayout: slug "${slug}" 未登記於 src/data/articles.ts`);
+
+const topic = getTopic(meta.topic);
+if (!topic) throw new Error(`ArticleLayout: topic "${meta.topic}" 未登記於 src/data/topics.ts`);
+
+const seriesIndex = getTopicArticles(meta.topic).findIndex((a) => a.slug === slug) + 1;
+const seriesNo = String(seriesIndex).padStart(2, '0');
+---
+
+<Layout title={`blog: ${meta.title.en}`} description={meta.desc.zh || undefined} math={math}>
+  <section class="max-w-4xl mx-auto px-6 pt-16 pb-24">
+    <div class="mb-10">
+      <a href={`/blog/${meta.topic}`} class="nav-link inline-flex items-center gap-1.5 mb-8">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        {topic.name}
+      </a>
+
+      <p class="section-label">{topic.name} · {seriesNo}</p>
+      <h1 class="text-3xl font-light tracking-tight mb-4" style="color: var(--text-1);"
+          data-zh={meta.title.zh} data-en={meta.title.en}>{meta.title.en}</h1>
+      {meta.desc.en && (
+        <p class="text-lg leading-relaxed" style="color: var(--text-3);"
+           data-zh={meta.desc.zh} data-en={meta.desc.en}>{meta.desc.en}</p>
+      )}
+
+      <div class="flex items-center gap-4 mt-6 text-xs font-mono" style="color: var(--text-5);">
+        <span>{meta.date}</span>
+        <span>·</span>
+        <span data-zh={`${meta.readTime} 分鐘`} data-en={`${meta.readTime} min`}>{meta.readTime} min</span>
+      </div>
+    </div>
+
+    <div class="border-t pt-10" style="border-color: var(--border);">
+      <slot />
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Copy buttons for code blocks(.article-code 只出現在文章頁)
+  document.querySelectorAll('.article-code').forEach((pre) => {
+    const btn = document.createElement('button');
+    btn.className = 'copy-code-btn';
+    btn.textContent = 'copy';
+    btn.addEventListener('click', () => {
+      const code = pre.querySelector('code');
+      navigator.clipboard.writeText(code ? code.textContent : pre.textContent).then(() => {
+        btn.textContent = 'copied!';
+        setTimeout(() => { btn.textContent = 'copy'; }, 1500);
+      });
+    });
+    pre.appendChild(btn);
+  });
+</script>

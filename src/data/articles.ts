@@ -14,7 +14,6 @@ export const articles: ArticleMeta[] = [
   {
     topic: 'agentic-ai',
     slug: 'harness-engineering',
-    url: '/blog/agentic-ai/harness-engineering',
     title: { zh: 'Harness Engineering', en: 'Harness Engineering' },
     date: '2026-06-22',
     readTime: 15,
@@ -27,7 +26,6 @@ export const articles: ArticleMeta[] = [
   {
     topic: 'agentic-ai',
     slug: 'loop-engineering',
-    url: '/blog/agentic-ai/loop-engineering',
     title: { zh: 'Loop Engineering', en: 'Loop Engineering' },
     date: '2026-06-24',
     readTime: 12,
@@ -40,7 +38,6 @@ export const articles: ArticleMeta[] = [
   {
     topic: 'agentic-ai',
     slug: 'claude-code-setup',
-    url: '/blog/agentic-ai/claude-code-setup',
     title: { zh: 'Claude Code 初始化與設定', en: 'Claude Code Setup & Configuration' },
     date: '2026-06-27',
     readTime: 1,
@@ -53,7 +50,6 @@ export const articles: ArticleMeta[] = [
   {
     topic: 'deep-learning',
     slug: 'transformer',
-    url: '/blog/deep-learning/transformer',
     title: { zh: 'Transformer', en: 'Transformer' },
     date: '2026-06-27',
     readTime: 9,
@@ -66,7 +62,6 @@ export const articles: ArticleMeta[] = [
   {
     topic: 'deep-learning',
     slug: 'cnn',
-    url: '/blog/deep-learning/cnn',
     title: { zh: 'CNN', en: 'CNN' },
     date: '2026-06-27',
     readTime: 1,
@@ -76,7 +71,6 @@ export const articles: ArticleMeta[] = [
   {
     topic: 'deep-learning',
     slug: 'resnet',
-    url: '/blog/deep-learning/resnet',
     title: { zh: 'ResNet', en: 'ResNet' },
     date: '2026-06-27',
     readTime: 1,

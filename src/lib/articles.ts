@@ -6,12 +6,16 @@ import { articles } from '../data/articles';
 export interface ArticleMeta {
   topic: string;
   slug: string;
-  url: string;
   title: { zh: string; en: string };
   date: string; // YYYY-MM-DD
   readTime: number; // 分鐘
   desc: { zh: string; en: string };
   tags: string[];
+}
+
+// 文章頁 URL 由 topic + slug 推導,不另外登記。
+export function articleUrl(article: ArticleMeta): string {
+  return `/blog/${article.topic}/${article.slug}`;
 }
 
 // 取得某 topic 下所有文章,依日期由舊到新排序。
@@ -23,5 +27,5 @@ export function getTopicArticles(topic: string): ArticleMeta[] {
 
 // 某 topic 的文章數(供 blog 首頁卡片顯示)。
 export function getArticleCount(topic: string): number {
-  return getTopicArticles(topic).length;
+  return articles.filter((a) => a.topic === topic).length;
 }

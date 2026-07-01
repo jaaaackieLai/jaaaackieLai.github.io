@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
+/* 字型改由 Layout.astro <head> 以 <link rel="preconnect"> + <link rel="stylesheet"> 載入,
+   避免 CSS @import 造成序列化的 render-blocking 請求鏈 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -63,6 +63,17 @@ html.dark {
     @apply text-sm font-medium uppercase tracking-[0.2em] mb-5;
   }
 
+  .section-heading {
+    color: var(--text-2);
+    @apply text-sm font-medium mb-4;
+  }
+
+  /* 文章內文段落(段落間 mb-4,小節結尾以 mb-10 utility 覆寫) */
+  .article-p {
+    color: var(--text-3);
+    @apply text-lg leading-relaxed mb-4;
+  }
+
   .article-h2 {
     color: var(--text-1);
     border-left: 2px solid var(--accent);
@@ -101,6 +112,28 @@ html.dark {
     color: inherit;
   }
 
+  /* 文章無序清單:li 的圓點由 ::before 產生,li 內只放內容 span */
+  .article-list {
+    color: var(--text-3);
+    @apply space-y-3 text-sm mb-4;
+  }
+
+  .article-list li {
+    @apply flex gap-3;
+  }
+
+  .article-list li::before {
+    content: '·';
+    color: var(--text-5);
+    @apply font-mono flex-shrink-0;
+  }
+
+  /* 文章第二個以後的大節容器(第一節由文章 body 外層的 border-t 提供) */
+  .article-section {
+    border-top: 1px solid var(--border);
+    @apply mt-10 pt-8;
+  }
+
   .article-steps {
     color: var(--text-3);
     @apply my-5 space-y-0 text-sm;
@@ -128,6 +161,13 @@ html.dark {
     @apply text-sm transition-colors duration-150;
   }
   .nav-link:hover { color: var(--text-1); }
+
+  /* 首頁社群連結(hover 用 accent 品牌色) */
+  .contact-link {
+    color: var(--text-3);
+    @apply text-sm transition-colors duration-150;
+  }
+  .contact-link:hover { color: var(--accent); }
 
   .row-item {
     border-bottom-color: var(--border);

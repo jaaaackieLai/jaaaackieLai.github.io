@@ -4,13 +4,14 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  math?: boolean; // 需要 MathJax 的頁面(含公式的文章)才傳 true
 }
 
-const { title, description = '個人部落格' } = Astro.props;
+const { title, description = '個人部落格', math = false } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="zh-TW">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,34 +22,39 @@ const { title, description = '個人部落格' } = Astro.props;
     <meta property="og:url" content={Astro.url} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
     <title>{title}</title>
-    <script is:inline>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['\\[', '\\]']],
-          processEscapes: true,
-        },
-        options: {
-          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-        },
-        startup: {
-          typeset: false,
-          ready: function () {
-            MathJax.startup.defaultReady();
-            window.renderMath = function (root) {
-              var target = root || document.body;
-              if (MathJax.typesetClear) MathJax.typesetClear([target]);
-              return MathJax.typesetPromise([target]).catch(function (error) {
-                console.error('MathJax typeset failed:', error);
-              });
-            };
-            window.renderMath();
+    {math && (
+      <script is:inline>
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['\\[', '\\]']],
+            processEscapes: true,
           },
-        },
-      };
-    </script>
-    <script is:inline id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+          options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+          },
+          startup: {
+            typeset: false,
+            ready: function () {
+              MathJax.startup.defaultReady();
+              window.renderMath = function (root) {
+                var target = root || document.body;
+                if (MathJax.typesetClear) MathJax.typesetClear([target]);
+                return MathJax.typesetPromise([target]).catch(function (error) {
+                  console.error('MathJax typeset failed:', error);
+                });
+              };
+              window.renderMath();
+            },
+          },
+        };
+      </script>
+      <script is:inline id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script>
+    )}
     <script is:inline>
       (function () {
         const theme = localStorage.getItem('theme');
@@ -116,11 +122,7 @@ const { title, description = '個人部落格' } = Astro.props;
         document.querySelectorAll('[data-zh]').forEach(function (el) {
           el.textContent = el.getAttribute('data-' + lang);
         });
-        if (lang === 'zh') {
-          document.documentElement.classList.add('lang-zh');
-        } else {
-          document.documentElement.classList.remove('lang-zh');
-        }
+        document.documentElement.classList.toggle('lang-zh', lang === 'zh');
         localStorage.setItem('lang', lang);
         document.documentElement.lang = lang === 'zh' ? 'zh-TW' : 'en';
         if (window.renderMath) {
@@ -133,26 +135,12 @@ const { title, description = '個人部落格' } = Astro.props;
         applyLanguage(current === 'en' ? 'zh' : 'en');
       }
 
-      // Apply saved language on load (default: English)
+      // Apply saved language on load. Static HTML is already English
+      // (initial text equals data-en), so the default needs no rewrite.
       (function () {
         var lang = localStorage.getItem('lang') || 'en';
-        applyLanguage(lang);
+        if (lang !== 'en') applyLanguage(lang);
       })();
-
-      // Copy buttons for code blocks
-      document.querySelectorAll('.article-code').forEach(function(pre) {
-        var btn = document.createElement('button');
-        btn.className = 'copy-code-btn';
-        btn.textContent = 'copy';
-        btn.addEventListener('click', function() {
-          var code = pre.querySelector('code');
-          navigator.clipboard.writeText(code ? code.textContent : pre.textContent).then(function() {
-            btn.textContent = 'copied!';
-            setTimeout(function() { btn.textContent = 'copy'; }, 1500);
-          });
-        });
-        pre.appendChild(btn);
-      });
     </script>
   </body>
 </html>

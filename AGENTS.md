@@ -13,7 +13,8 @@ blog/
 │   ├── lib/
 │   │   └── articles.ts                  # ArticleMeta type + getTopicArticles() / getArticleCount() helpers
 │   ├── layouts/
-│   │   └── Layout.astro                 # Shared layout: nav, footer, dark/light mode toggle
+│   │   ├── Layout.astro                 # Shared layout: nav, footer, dark/light mode toggle, opt-in MathJax (math prop)
+│   │   └── ArticleLayout.astro          # Article page shell: header/metadata rendered from data/articles.ts by slug
 │   ├── page-content/                    # User-authored zh-only markdown drafts (gitignored); source for blog-convert
 │   │   ├── agentic-ai/*.md
 │   │   └── deep-learning/*.md

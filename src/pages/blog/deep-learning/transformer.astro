@@ -1,38 +1,13 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
 import transformerDiagram from '../../../assets/Transformer.png';
 import scaledDotProductAttention from '../../../assets/Scaled Dot-Product Attention.png';
 import multiHeadAttention from '../../../assets/Multi-Head Attention.png';
 ---
 
-<Layout title="blog: Transformer" description="詳細解析 Attention is all you need 提出的 Transformer">
-  <section class="max-w-2xl mx-auto px-6 pt-16 pb-24">
-    <div class="mb-10">
-      <a href="/blog/deep-learning" class="inline-flex items-center gap-1.5 text-sm transition-colors mb-8"
-         style="color: var(--text-4);" onmouseover="this.style.color='var(--text-2)'" onmouseout="this.style.color='var(--text-4)'">
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Deep Learning
-      </a>
-
-      <p class="section-label">Deep Learning · 01</p>
-      <h1 class="text-3xl font-light tracking-tight mb-4" style="color: var(--text-1);"
-          data-zh="Transformer" data-en="Transformer">Transformer</h1>
-      <p class="text-lg leading-relaxed" style="color: var(--text-3);"
-         data-zh="詳細解析 Attention is all you need 提出的 Transformer"
-         data-en="A detailed walkthrough of the Transformer proposed in Attention Is All You Need.">A detailed walkthrough of the Transformer proposed in Attention Is All You Need.</p>
-
-      <div class="flex items-center gap-4 mt-6 text-xs font-mono" style="color: var(--text-5);">
-        <span>2026-06-27</span>
-        <span>·</span>
-        <span data-zh="9 分鐘" data-en="9 min">9 min</span>
-      </div>
-    </div>
-
-    <div class="border-t pt-10" style="border-color: var(--border);">
+<ArticleLayout slug="transformer" math>
       <p class="section-label" data-zh="概覽" data-en="Overview">Overview</p>
-      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+      <p class="article-p">
         <span data-zh="Transformer 是一個 " data-en="Transformer is a ">Transformer is a </span><strong class="article-strong" data-zh="sequence-to-sequence(seq2seq)" data-en="sequence-to-sequence, or seq2seq">sequence-to-sequence, or seq2seq</strong><span data-zh=" 的模型，如圖所示，它的整體架構分成兩大模組：" data-en=", model. As the diagram shows, its overall architecture is divided into two major modules:">, model. As the diagram shows, its overall architecture is divided into two major modules:</span>
       </p>
 
@@ -43,38 +18,36 @@ import multiHeadAttention from '../../../assets/Multi-Head Attention.png';
         </figcaption>
       </figure>
 
-      <ul class="space-y-3 text-sm mb-4" style="color: var(--text-3);">
-        <li class="flex gap-3">
-          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
+      <ul class="article-list">
+        <li>
           <span><strong class="article-strong" data-zh="Encoder（編碼器）" data-en="Encoder">Encoder</strong><span data-zh="：把整個輸入序列（例如「我愛貓」）一次讀完，輸出一個對這段話的「深度理解」。Encoder 不生成任何輸出詞，它的工作只是理解。" data-en=": reads the entire input sequence, such as 我愛貓, in one pass and outputs a deep understanding of that sentence. The Encoder does not generate output tokens. Its job is understanding.">: reads the entire input sequence, such as 我愛貓, in one pass and outputs a deep understanding of that sentence. The Encoder does not generate output tokens. Its job is understanding.</span></span>
         </li>
-        <li class="flex gap-3">
-          <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
+        <li>
           <span><strong class="article-strong" data-zh="Decoder（解碼器）" data-en="Decoder">Decoder</strong><span data-zh="：一邊參考 Encoder 的理解，一邊一個詞一個詞地生成輸出序列（「I」→「love」→「cats」）。每次生成一個詞，就把那個詞再丟回 Decoder 的輸入，讓它生成下一個詞。" data-en=": refers to the Encoder's understanding while generating the output sequence one token at a time, such as I → love → cats. Each generated token is fed back into the Decoder input so it can generate the next token.">: refers to the Encoder's understanding while generating the output sequence one token at a time, such as I → love → cats. Each generated token is fed back into the Decoder input so it can generate the next token.</span></span>
         </li>
       </ul>
 
-      <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+      <p class="article-p">
         <span data-zh="兩塊最後都有幾個共同的積木：" data-en="Both sides use several shared building blocks: ">Both sides use several shared building blocks: </span><strong class="article-strong" data-zh="Embedding（把詞變成向量）→ Positional Encoding（加位置資訊）→ 若干重複的層（各有 Attention 和 FFN）" data-en="Embedding, which turns tokens into vectors, Positional Encoding, which adds position information, and repeated layers that contain Attention and FFN">Embedding, which turns tokens into vectors, Positional Encoding, which adds position information, and repeated layers that contain Attention and FFN</strong><span data-zh="。Encoder 的每個層有 2 個子層，Decoder 的每個層有 3 個子層。圖中的「Nx」表示這些層會疊 $N=6$ 次。" data-en=". Each Encoder layer has 2 sublayers, while each Decoder layer has 3. The Nx in the diagram means these layers are stacked $N=6$ times.">. Each Encoder layer has 2 sublayers, while each Decoder layer has 3. The Nx in the diagram means these layers are stacked $N=6$ times.</span>
       </p>
 
-      <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+      <p class="article-p mb-10"
          data-zh="理解整體流程之後，接著分別拆解 Encoder 和 Decoder 的內部。"
          data-en="After the overall flow is clear, we can break down the internals of the Encoder and Decoder separately.">After the overall flow is clear, we can break down the internals of the Encoder and Decoder separately.</p>
 
-      <div class="border-t mt-10 pt-8" style="border-color: var(--border);">
+      <div class="article-section">
         <p class="section-label" data-zh="編碼器" data-en="Encoder">Encoder</p>
 
         <p class="article-h2" data-zh="向量化" data-en="Vectorization">Vectorization</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
-          <span data-zh="電腦只懂數字，所以第一件事是把每個詞（token）映射成一個 $d_&#123;\\text&#123;model&#125;&#125; = 512$ 維的向量，這個過程叫做 " data-en="Computers only understand numbers, so the first step is to map each token into a $d_&#123;\\text&#123;model&#125;&#125; = 512$ dimensional vector. This process is called ">Computers only understand numbers, so the first step is to map each token into a $d_&#123;&#92;text&#123;model&#125;&#125; = 512$ dimensional vector. This process is called </span><strong class="article-strong" data-zh="Input Embedding" data-en="Input Embedding">Input Embedding</strong><span data-zh="。這個映射不是人手動設計的，而是在訓練中自動學到的：訓練過程中模型會讓意思相近的詞（「貓」和「狗」）在向量空間裡靠近，讓意思不相關的詞（「貓」和「火箭」）在向量空間裡遠離。" data-en=". The mapping is learned during training instead of being manually designed: words with related meanings, such as cat and dog, move closer in vector space, while unrelated words, such as cat and rocket, move farther apart.">. The mapping is learned during training instead of being manually designed: words with related meanings, such as cat and dog, move closer in vector space, while unrelated words, such as cat and rocket, move farther apart.</span>
+        <p class="article-p">
+          <span data-zh="電腦只懂數字，所以第一件事是把每個詞（token）映射成一個 $d_&#123;\\text&#123;model&#125;&#125; = 512$ 維的向量，這個過程叫做 " data-en="Computers only understand numbers, so the first step is to map each token into a $d_&#123;\\text&#123;model&#125;&#125; = 512$ dimensional vector. This process is called ">Computers only understand numbers, so the first step is to map each token into a $d_&#123;&#92;text&#123;model&#125;&#125; = 512$ dimensional vector. This process is called </span><strong class="article-strong">Input Embedding</strong><span data-zh="。這個映射不是人手動設計的，而是在訓練中自動學到的：訓練過程中模型會讓意思相近的詞（「貓」和「狗」）在向量空間裡靠近，讓意思不相關的詞（「貓」和「火箭」）在向量空間裡遠離。" data-en=". The mapping is learned during training instead of being manually designed: words with related meanings, such as cat and dog, move closer in vector space, while unrelated words, such as cat and rocket, move farther apart.">. The mapping is learned during training instead of being manually designed: words with related meanings, such as cat and dog, move closer in vector space, while unrelated words, such as cat and rocket, move farther apart.</span>
         </p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="但 Embedding 只告訴模型「這個詞是什麼」，沒有告訴模型「這個詞在哪個位置」。這在 Transformer 裡是個大問題，因為 Transformer 是一次平行讀取整個序列的（不像 RNN 按順序一個一個讀）。如果沒有位置資訊，「我愛你」和「你愛我」對模型來說完全一樣（三個詞的集合相同，只是順序不同），這顯然是錯的。"
            data-en="Embedding tells the model what a token is, but not where the token is. This is a major issue in Transformer because it reads the whole sequence in parallel, unlike an RNN that reads tokens one by one in order. Without position information, 我愛你 and 你愛我 would look identical to the model because they contain the same three tokens in a different order, which is clearly wrong.">Embedding tells the model what a token is, but not where the token is. This is a major issue in Transformer because it reads the whole sequence in parallel, unlike an RNN that reads tokens one by one in order. Without position information, 我愛你 and 你愛我 would look identical to the model because they contain the same three tokens in a different order, which is clearly wrong.</p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <p class="article-p">
           <span data-zh="解決辦法是 " data-en="The solution is ">The solution is </span><strong class="article-strong" data-zh="Positional Encoding（位置編碼）" data-en="Positional Encoding">Positional Encoding</strong><span data-zh="：為每個位置生成一個固定的「位置指紋」向量，直接加到 Embedding 向量上：" data-en=": generate a fixed position fingerprint vector for each position, then add it directly to the Embedding vector:">: generate a fixed position fingerprint vector for each position, then add it directly to the Embedding vector:</span>
         </p>
 
@@ -84,35 +57,32 @@ PE_{(pos,\,2i)} = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right),
 PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
 \]`}</div>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="$pos$ 是位置序號，$i$ 是向量的維度索引。用不同頻率的 sin 和 cos 組合，每個位置得到一個唯一的指紋。sin/cos 的好處是：位置 $pos + k$ 的編碼可以用位置 $pos$ 的編碼的線性函數表示，模型因此能感知相對距離，甚至能處理比訓練時更長的序列。"
            data-en="$pos$ is the position index, and $i$ is the dimension index of the vector. By combining sin and cos at different frequencies, each position receives a unique fingerprint. The benefit of sin/cos is that the encoding of position $pos + k$ can be represented as a linear function of the encoding at position $pos$, so the model can sense relative distance and even handle sequences longer than those seen during training.">$pos$ is the position index, and $i$ is the dimension index of the vector. By combining sin and cos at different frequencies, each position receives a unique fingerprint. The benefit of sin/cos is that the encoding of position $pos + k$ can be represented as a linear function of the encoding at position $pos$, so the model can sense relative distance and even handle sequences longer than those seen during training.</p>
 
         <p class="article-h2" data-zh="自注意力機制" data-en="Self-Attention">Self-Attention</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="這是 Transformer 最核心的機制。加完 Positional Encoding 之後，每個位置有一個 512 維向量。這些向量此時還是孤立的：每個詞只知道自己是什麼、在哪個位置，還不知道句子裡其他詞在說什麼。"
            data-en="This is the core mechanism of Transformer. After Positional Encoding is added, each position has a 512 dimensional vector. At this point the vectors are still isolated: each token only knows what it is and where it is, without knowing what the other tokens in the sentence are saying.">This is the core mechanism of Transformer. After Positional Encoding is added, each position has a 512 dimensional vector. At this point the vectors are still isolated: each token only knows what it is and where it is, without knowing what the other tokens in the sentence are saying.</p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <p class="article-p">
           <strong class="article-strong" data-zh="Self-Attention 的任務" data-en="The task of Self-Attention">The task of Self-Attention</strong><span data-zh="是讓每個位置都能「看到」序列中所有其他位置，並把相關的資訊聚合進來。具體做法是：把每個 token 的向量用三個不同的線性投影轉成三個新向量：" data-en=" is to let every position see every other position in the sequence and aggregate the relevant information. Concretely, each token vector is transformed by three different linear projections into three new vectors:"> is to let every position see every other position in the sequence and aggregate the relevant information. Concretely, each token vector is transformed by three different linear projections into three new vectors:</span>
         </p>
 
-        <ul class="space-y-3 text-sm mb-4" style="color: var(--text-3);">
-          <li class="flex gap-3">
-            <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
+        <ul class="article-list">
+          <li>
             <span><strong class="article-strong" data-zh="Q（Query，查詢）" data-en="Q, Query">Q, Query</strong><span data-zh="：我現在想向整個序列找什麼資訊？" data-en=": what information am I looking for in the whole sequence right now?">: what information am I looking for in the whole sequence right now?</span></span>
           </li>
-          <li class="flex gap-3">
-            <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
+          <li>
             <span><strong class="article-strong" data-zh="K（Key，鍵）" data-en="K, Key">K, Key</strong><span data-zh="：我這個位置有什麼資訊可以被其他人查？" data-en=": what information does this position expose for others to look up?">: what information does this position expose for others to look up?</span></span>
           </li>
-          <li class="flex gap-3">
-            <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
+          <li>
             <span><strong class="article-strong" data-zh="V（Value，值）" data-en="V, Value">V, Value</strong><span data-zh="：如果其他人查到了我，我實際提供什麼內容？" data-en=": if another position attends to me, what content do I actually provide?">: if another position attends to me, what content do I actually provide?</span></span>
           </li>
         </ul>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="計算流程如下圖所示，從圖的底部往上讀就是資料流的方向："
            data-en="The computation flow is shown below. Read from the bottom upward to follow the data flow:">The computation flow is shown below. Read from the bottom upward to follow the data flow:</p>
 
@@ -131,7 +101,7 @@ PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
           </li>
           <li class="article-step">
             <span class="article-step-index">4</span>
-            <span><strong class="article-strong" data-zh="SoftMax" data-en="SoftMax">SoftMax</strong><span data-zh="：把每一行的分數轉成加起來等於 1 的機率。這就像把吻合程度換算成我要從這本書借多少內容的百分比。" data-en=": convert each row of scores into probabilities that sum to 1. This is like turning match quality into the percentage of content to borrow from each book.">: convert each row of scores into probabilities that sum to 1. This is like turning match quality into the percentage of content to borrow from each book.</span></span>
+            <span><strong class="article-strong">SoftMax</strong><span data-zh="：把每一行的分數轉成加起來等於 1 的機率。這就像把吻合程度換算成我要從這本書借多少內容的百分比。" data-en=": convert each row of scores into probabilities that sum to 1. This is like turning match quality into the percentage of content to borrow from each book.">: convert each row of scores into probabilities that sum to 1. This is like turning match quality into the percentage of content to borrow from each book.</span></span>
           </li>
           <li class="article-step">
             <span class="article-step-index">5</span>
@@ -149,20 +119,20 @@ PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
         </figure>
 
         <p class="article-h2" data-zh="多頭自注意力機制" data-en="Multi-Head Attention">Multi-Head Attention</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
-          <span data-zh="一段話裡，詞和詞之間的關係是多維的：語法上有主詞－動詞，語義上有貓→動物，指代上有它→前面的貓。不同層面的關係同時並存，單一組 Q/K/V 可能只學會其中一種。" data-en="In a sentence, relationships between tokens are multidimensional: subject-verb in syntax, cat → animal in semantics, and it → the previous cat in reference. These layers coexist, and a single Q/K/V set may learn only one of them. The solution used by ">In a sentence, relationships between tokens are multidimensional: subject-verb in syntax, cat → animal in semantics, and it → the previous cat in reference. These layers coexist, and a single Q/K/V set may learn only one of them. The solution used by </span><strong class="article-strong" data-zh="Multi-Head Attention" data-en="Multi-Head Attention">Multi-Head Attention</strong><span data-zh=" 的解法可以從下圖看得很清楚：" data-en=" is clear in the diagram below:"> is clear in the diagram below:</span>
+        <p class="article-p">
+          <span data-zh="一段話裡，詞和詞之間的關係是多維的：語法上有主詞－動詞，語義上有貓→動物，指代上有它→前面的貓。不同層面的關係同時並存，單一組 Q/K/V 可能只學會其中一種。" data-en="In a sentence, relationships between tokens are multidimensional: subject-verb in syntax, cat → animal in semantics, and it → the previous cat in reference. These layers coexist, and a single Q/K/V set may learn only one of them. The solution used by ">In a sentence, relationships between tokens are multidimensional: subject-verb in syntax, cat → animal in semantics, and it → the previous cat in reference. These layers coexist, and a single Q/K/V set may learn only one of them. The solution used by </span><strong class="article-strong">Multi-Head Attention</strong><span data-zh=" 的解法可以從下圖看得很清楚：" data-en=" is clear in the diagram below:"> is clear in the diagram below:</span>
         </p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <p class="article-p">
           <span data-zh="圖的最底層，同一組輸入 Q、K、V 各自通過 " data-en="At the bottom of the diagram, the same input Q, K, and V each pass through ">At the bottom of the diagram, the same input Q, K, and V each pass through </span><strong class="article-strong" data-zh="$h$ 個平行的 Linear 投影層" data-en="$h$ parallel Linear projection layers">$h$ parallel Linear projection layers</strong><span data-zh="，把同樣的 Q/K/V 投影到 $h$ 個不同的子空間。每組投影用自己的一套矩陣 $W_i^Q,\\, W_i^K,\\, W_i^V$，讓每個 head 聚焦在不同類型的關係上。" data-en=". The same Q/K/V are projected into $h$ different subspaces. Each projection uses its own matrices $W_i^Q,\\, W_i^K,\\, W_i^V$, allowing each head to focus on a different type of relationship.">. The same Q/K/V are projected into $h$ different subspaces. Each projection uses its own matrices $W_i^Q,&#92;, W_i^K,&#92;, W_i^V$, allowing each head to focus on a different type of relationship.</span>
         </p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
-          <span data-zh="投影完之後，$h$ 組各自跑一次完整的 " data-en="After projection, the $h$ groups each run a full ">After projection, the $h$ groups each run a full </span><strong class="article-strong" data-zh="Scaled Dot-Product Attention" data-en="Scaled Dot-Product Attention">Scaled Dot-Product Attention</strong><span data-zh="，互不干擾，各自輸出一個聚合後的向量。圖中間那疊藍色方塊就代表 $h$ 組 Attention 在同時並行運算。" data-en=" independently and each outputs an aggregated vector. The stack of blue blocks in the middle of the diagram represents $h$ Attention computations running in parallel."> independently and each outputs an aggregated vector. The stack of blue blocks in the middle of the diagram represents $h$ Attention computations running in parallel.</span>
+        <p class="article-p">
+          <span data-zh="投影完之後，$h$ 組各自跑一次完整的 " data-en="After projection, the $h$ groups each run a full ">After projection, the $h$ groups each run a full </span><strong class="article-strong">Scaled Dot-Product Attention</strong><span data-zh="，互不干擾，各自輸出一個聚合後的向量。圖中間那疊藍色方塊就代表 $h$ 組 Attention 在同時並行運算。" data-en=" independently and each outputs an aggregated vector. The stack of blue blocks in the middle of the diagram represents $h$ Attention computations running in parallel."> independently and each outputs an aggregated vector. The stack of blue blocks in the middle of the diagram represents $h$ Attention computations running in parallel.</span>
         </p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
-          <span data-zh="最後兩步是 " data-en="The final two steps are ">The final two steps are </span><strong class="article-strong" data-zh="Concat" data-en="Concat">Concat</strong><span data-zh=" 再接一個 " data-en=" followed by "> followed by </span><strong class="article-strong" data-zh="Linear" data-en="Linear">Linear</strong><span data-zh="：把 $h$ 組結果拼接成一個長向量，再用一個線性層投影回原本的 $d_&#123;\\text&#123;model&#125;&#125; = 512$ 維。公式寫成：" data-en=": concatenate the $h$ results into one long vector, then use a linear layer to project it back to the original $d_&#123;\\text&#123;model&#125;&#125; = 512$ dimensions. The formula is:">: concatenate the $h$ results into one long vector, then use a linear layer to project it back to the original $d_&#123;&#92;text&#123;model&#125;&#125; = 512$ dimensions. The formula is:</span>
+        <p class="article-p">
+          <span data-zh="最後兩步是 " data-en="The final two steps are ">The final two steps are </span><strong class="article-strong">Concat</strong><span data-zh=" 再接一個 " data-en=" followed by "> followed by </span><strong class="article-strong">Linear</strong><span data-zh="：把 $h$ 組結果拼接成一個長向量，再用一個線性層投影回原本的 $d_&#123;\\text&#123;model&#125;&#125; = 512$ 維。公式寫成：" data-en=": concatenate the $h$ results into one long vector, then use a linear layer to project it back to the original $d_&#123;\\text&#123;model&#125;&#125; = 512$ dimensions. The formula is:">: concatenate the $h$ results into one long vector, then use a linear layer to project it back to the original $d_&#123;&#92;text&#123;model&#125;&#125; = 512$ dimensions. The formula is:</span>
         </p>
 
         <div class="article-formula">{String.raw`\[
@@ -173,7 +143,7 @@ PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
 \operatorname{Attention}(QW_i^Q,KW_i^K,VW_i^V)
 \]`}</div>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="論文使用 $h = 8$ 個 head，每個 head 的維度 $d_k = 512/8 = 64$，總計算量和單做一次 $d_k = 512$ 的 Attention 相當，但同時得到了 8 個視角的理解。"
            data-en="The paper uses $h = 8$ heads. Each head has dimension $d_k = 512/8 = 64$. The total computation is comparable to running Attention once at $d_k = 512$, while giving the model 8 perspectives at the same time.">The paper uses $h = 8$ heads. Each head has dimension $d_k = 512/8 = 64$. The total computation is comparable to running Attention once at $d_k = 512$, while giving the model 8 perspectives at the same time.</p>
 
@@ -182,20 +152,20 @@ PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
         </figure>
 
         <p class="article-h2" data-zh="殘差連接" data-en="Residual Connection">Residual Connection</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <p class="article-p">
           <span data-zh="Self-Attention 輸出之後，立刻做兩件事。第一是" data-en="After Self-Attention outputs, two things happen immediately. The first is ">After Self-Attention outputs, two things happen immediately. The first is </span><strong class="article-strong" data-zh="殘差連接（Residual Connection）" data-en="Residual Connection">Residual Connection</strong><span data-zh="：把 Self-Attention 的輸入 $x$ 直接加到它的輸出上，$x_1 = x + \\text&#123;MultiHeadAttn&#125;(x)$。理由是深層神經網路訓練時，錯誤訊號（梯度）要從最頂層傳回最底層，每經過一層都會衰減。殘差連接相當於在每層樓加一條直達電梯，讓梯度可以繞過這一層直接傳回去，解決深層網路的梯度消失問題。數學上梯度變成 $1 + \\frac&#123;\\partial \\text&#123;Sublayer&#125;&#125;&#123;\\partial x&#125;$，多了那個 $1$ 就不會完全消失。" data-en=": add the input $x$ of Self-Attention directly to its output, $x_1 = x + \\text&#123;MultiHeadAttn&#125;(x)$. The reason is that during deep neural network training, the error signal, or gradient, must travel from the top layer back to the bottom layer, weakening at each layer. A residual connection gives the gradient a direct path around the sublayer, solving the vanishing gradient problem in deep networks. Mathematically the gradient becomes $1 + \\frac&#123;\\partial \\text&#123;Sublayer&#125;&#125;&#123;\\partial x&#125;$, and the added $1$ prevents it from disappearing completely.">: add the input $x$ of Self-Attention directly to its output, $x_1 = x + &#92;text&#123;MultiHeadAttn&#125;(x)$. The reason is that during deep neural network training, the error signal, or gradient, must travel from the top layer back to the bottom layer, weakening at each layer. A residual connection gives the gradient a direct path around the sublayer, solving the vanishing gradient problem in deep networks. Mathematically the gradient becomes $1 + &#92;frac&#123;&#92;partial &#92;text&#123;Sublayer&#125;&#125;&#123;&#92;partial x&#125;$, and the added $1$ prevents it from disappearing completely.</span>
         </p>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);">
-          <span data-zh="第二是 " data-en="The second is ">The second is </span><strong class="article-strong" data-zh="Layer Normalization" data-en="Layer Normalization">Layer Normalization</strong><span data-zh="：對 $x_1$ 的每個 token 向量做正規化，把數值調到均值 $\\mu=0$、標準差 $\\sigma=1$，再乘上可學習的 $\\gamma$ 和 $\\beta$：$\\text&#123;LayerNorm&#125;(x_1) = \\gamma \\cdot \\frac&#123;x_1 - \\mu&#125;&#123;\\sigma + \\epsilon&#125; + \\beta$。注意這裡的 $\\mu$ 和 $\\sigma$ 是這個 token 向量自己的均值和標準差，和 Batch Normalization 用整批樣本的統計量不同。LayerNorm 讓每一層看到的輸入分布保持穩定，使訓練更穩定更快。" data-en=": normalize each token vector in $x_1$ to mean $\\mu=0$ and standard deviation $\\sigma=1$, then multiply by learnable $\\gamma$ and $\\beta$: $\\text&#123;LayerNorm&#125;(x_1) = \\gamma \\cdot \\frac&#123;x_1 - \\mu&#125;&#123;\\sigma + \\epsilon&#125; + \\beta$. Here $\\mu$ and $\\sigma$ are computed from the token vector itself, unlike Batch Normalization, which uses statistics from the whole batch. LayerNorm keeps the input distribution seen by each layer stable, making training more stable and faster.">: normalize each token vector in $x_1$ to mean $&#92;mu=0$ and standard deviation $&#92;sigma=1$, then multiply by learnable $&#92;gamma$ and $&#92;beta$: $&#92;text&#123;LayerNorm&#125;(x_1) = &#92;gamma &#92;cdot &#92;frac&#123;x_1 - &#92;mu&#125;&#123;&#92;sigma + &#92;epsilon&#125; + &#92;beta$. Here $&#92;mu$ and $&#92;sigma$ are computed from the token vector itself, unlike Batch Normalization, which uses statistics from the whole batch. LayerNorm keeps the input distribution seen by each layer stable, making training more stable and faster.</span>
+        <p class="article-p mb-10">
+          <span data-zh="第二是 " data-en="The second is ">The second is </span><strong class="article-strong">Layer Normalization</strong><span data-zh="：對 $x_1$ 的每個 token 向量做正規化，把數值調到均值 $\\mu=0$、標準差 $\\sigma=1$，再乘上可學習的 $\\gamma$ 和 $\\beta$：$\\text&#123;LayerNorm&#125;(x_1) = \\gamma \\cdot \\frac&#123;x_1 - \\mu&#125;&#123;\\sigma + \\epsilon&#125; + \\beta$。注意這裡的 $\\mu$ 和 $\\sigma$ 是這個 token 向量自己的均值和標準差，和 Batch Normalization 用整批樣本的統計量不同。LayerNorm 讓每一層看到的輸入分布保持穩定，使訓練更穩定更快。" data-en=": normalize each token vector in $x_1$ to mean $\\mu=0$ and standard deviation $\\sigma=1$, then multiply by learnable $\\gamma$ and $\\beta$: $\\text&#123;LayerNorm&#125;(x_1) = \\gamma \\cdot \\frac&#123;x_1 - \\mu&#125;&#123;\\sigma + \\epsilon&#125; + \\beta$. Here $\\mu$ and $\\sigma$ are computed from the token vector itself, unlike Batch Normalization, which uses statistics from the whole batch. LayerNorm keeps the input distribution seen by each layer stable, making training more stable and faster.">: normalize each token vector in $x_1$ to mean $&#92;mu=0$ and standard deviation $&#92;sigma=1$, then multiply by learnable $&#92;gamma$ and $&#92;beta$: $&#92;text&#123;LayerNorm&#125;(x_1) = &#92;gamma &#92;cdot &#92;frac&#123;x_1 - &#92;mu&#125;&#123;&#92;sigma + &#92;epsilon&#125; + &#92;beta$. Here $&#92;mu$ and $&#92;sigma$ are computed from the token vector itself, unlike Batch Normalization, which uses statistics from the whole batch. LayerNorm keeps the input distribution seen by each layer stable, making training more stable and faster.</span>
         </p>
 
         <p class="article-h2" data-zh="前饋網路" data-en="Feed-Forward Network">Feed-Forward Network</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="通過 Self-Attention，每個 token 的向量已經吸收了整個序列的資訊。但 Attention 做的是加權平均，本質上是線性運算。只靠線性，模型的表達能力是有限的；需要引入非線性，模型才能學到更複雜的模式。"
            data-en="After Self-Attention, each token vector has absorbed information from the whole sequence. Attention, however, performs a weighted average, which is fundamentally linear. With only linear operations, the model's expressive power is limited. Nonlinearity is needed for the model to learn more complex patterns.">After Self-Attention, each token vector has absorbed information from the whole sequence. Attention, however, performs a weighted average, which is fundamentally linear. With only linear operations, the model's expressive power is limited. Nonlinearity is needed for the model to learn more complex patterns.</p>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <p class="article-p">
           <strong class="article-strong" data-zh="FFN（前饋網路）" data-en="FFN, the feed-forward network">FFN, the feed-forward network</strong><span data-zh=" 就在這裡做非線性轉換：" data-en=", performs that nonlinear transformation here:">, performs that nonlinear transformation here:</span>
         </p>
 
@@ -203,16 +173,16 @@ PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
 \operatorname{FFN}(x)=\max(0,xW_1+b_1)W_2+b_2
 \]`}</div>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);">
+        <p class="article-p">
           <span data-zh="它先把 512 維放大到 2048 維，接 ReLU 激活函數（$\\max(0, \\cdot)$，小於 0 的值設為 0），再縮回 512 維。" data-en="It first expands 512 dimensions to 2048 dimensions, applies the ReLU activation function, $\\max(0, \\cdot)$, setting values below 0 to 0, then projects back to 512 dimensions. ">It first expands 512 dimensions to 2048 dimensions, applies the ReLU activation function, $&#92;max(0, &#92;cdot)$, setting values below 0 to 0, then projects back to 512 dimensions. </span><strong class="article-strong" data-zh="關鍵是：FFN 對每個 token 獨立計算，不同位置之間完全不互相影響（position-wise）。" data-en="The key point is that FFN is applied independently to each token, with no interaction between positions, which is why it is called position-wise.">The key point is that FFN is applied independently to each token, with no interaction between positions, which is why it is called position-wise.</strong><span data-zh=" 換句話說，Attention 是集體討論，每個 token 從其他 token 借資訊；FFN 是個人消化，每個 token 用自己聚合完的資訊做非線性思考。" data-en=" In other words, Attention is group discussion, where each token borrows information from other tokens. FFN is individual digestion, where each token performs nonlinear reasoning on the information it has already aggregated."> In other words, Attention is group discussion, where each token borrows information from other tokens. FFN is individual digestion, where each token performs nonlinear reasoning on the information it has already aggregated.</span>
         </p>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="結束後再次做殘差連接，保護梯度傳播，並搭配 LayerNorm 來穩定輸入分布。"
            data-en="After that, another residual connection protects gradient flow, and LayerNorm stabilizes the input distribution.">After that, another residual connection protects gradient flow, and LayerNorm stabilizes the input distribution.</p>
 
         <p class="article-h2" data-zh="Encoder 輸出" data-en="Encoder Output">Encoder Output</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="因此，一個 Encoder Layer（Self-Attention → Add&amp;Norm → FFN → Add&amp;Norm）疊 6 次之後，輸出是一個矩陣："
            data-en="Therefore, after one Encoder Layer, Self-Attention → Add&amp;Norm → FFN → Add&amp;Norm, is stacked 6 times, the output is a matrix:">Therefore, after one Encoder Layer, Self-Attention → Add&amp;Norm → FFN → Add&amp;Norm, is stacked 6 times, the output is a matrix:</p>
 
@@ -220,23 +190,23 @@ PE_{(pos,\,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
 \text{Encoder output} \in \mathbb{R}^{n \times 512}
 \]`}</div>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="$n$ 是輸入序列的長度。例如「我愛貓」有 3 個 token，$n=3$。每一行是一個 512 維向量，對應原始序列的一個 token，但已經不再是孤立的詞向量，每個向量都整合了整個句子的上下文資訊，因為經過了 6 層 Self-Attention，每層都讓每個位置看過整個序列。"
            data-en="$n$ is the length of the input sequence. For example, 我愛貓 has 3 tokens, so $n=3$. Each row is a 512 dimensional vector corresponding to one token in the original sequence, but it is no longer an isolated token vector. Each vector has integrated context from the entire sentence because 6 layers of Self-Attention have repeatedly let every position see the whole sequence.">$n$ is the length of the input sequence. For example, 我愛貓 has 3 tokens, so $n=3$. Each row is a 512 dimensional vector corresponding to one token in the original sequence, but it is no longer an isolated token vector. Each vector has integrated context from the entire sentence because 6 layers of Self-Attention have repeatedly let every position see the whole sequence.</p>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="這個矩陣就是 Encoder 對輸入序列的深度理解，會被完整地交給 Decoder 使用。"
            data-en="This matrix is the Encoder's deep understanding of the input sequence, and it is passed in full to the Decoder.">This matrix is the Encoder's deep understanding of the input sequence, and it is passed in full to the Decoder.</p>
       </div>
 
-      <div class="border-t mt-10 pt-8" style="border-color: var(--border);">
+      <div class="article-section">
         <p class="section-label" data-zh="解碼器" data-en="Decoder">Decoder</p>
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);">
+        <p class="article-p mb-10">
           <span data-zh="Decoder 比 Encoder 多一個子層，每層共有 3 個子層，整體也疊 6 次。Decoder 的輸入是" data-en="The Decoder has one more sublayer than the Encoder, so each layer contains 3 sublayers, and the whole stack is also repeated 6 times. The Decoder input is the ">The Decoder has one more sublayer than the Encoder, so each layer contains 3 sublayers, and the whole stack is also repeated 6 times. The Decoder input is the </span><strong class="article-strong" data-zh="已經生成的輸出詞" data-en="output tokens already generated">output tokens already generated</strong><span data-zh="（第一步是一個特殊的起始符 &lt;BOS&gt;），每次生成一個新詞，就把它加進 Decoder 的輸入，再生成下一個。" data-en=". The first step starts with a special beginning token, &lt;BOS&gt;. Each newly generated token is added back into the Decoder input before generating the next one.">. The first step starts with a special beginning token, &lt;BOS&gt;. Each newly generated token is added back into the Decoder input before generating the next one.</span>
         </p>
 
         <p class="article-h2" data-zh="多頭遮罩注意力機制" data-en="Masked Multi-Head Attention">Masked Multi-Head Attention</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="Decoder 第一個子層也是 Self-Attention，但加了一個遮罩（Mask）：每個位置只能看到它自己和它之前已生成的 token，看不到未來的 token。做法是把 Attention 分數矩陣裡未來位置的值設成 $-\\infty$（softmax 後變 0，等同於完全忽略）："
            data-en="The first Decoder sublayer is also Self-Attention, with an added Mask: each position can only see itself and the tokens generated before it, while future tokens are hidden. This is done by setting future-position values in the Attention score matrix to $-\\infty$, which becomes 0 after softmax and is therefore ignored completely:">The first Decoder sublayer is also Self-Attention, with an added Mask: each position can only see itself and the tokens generated before it, while future tokens are hidden. This is done by setting future-position values in the Attention score matrix to $-&#92;infty$, which becomes 0 after softmax and is therefore ignored completely:</p>
 
@@ -248,22 +218,20 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
 \end{cases}
 \]`}</div>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="為什麼要 Mask？這是為了讓訓練和推理條件一致。訓練時模型知道完整的目標序列（例如 I love cats），如果 Attention 可以看到未來的詞，模型只要直接複製答案就好，完全不需要學習翻譯；而推理時模型確實一次只能生成一個詞、只能看到過去，所以訓練時必須模擬這個限制。同樣地，這個子層後面跟著殘差連接 + LayerNorm。"
            data-en="Why use a Mask? It keeps training and inference conditions aligned. During training, the model has the full target sequence, such as I love cats. If Attention could see future tokens, the model could simply copy the answer without learning translation. During inference, the model can only generate one token at a time and only see the past, so training must simulate that restriction. This sublayer is also followed by residual connection plus LayerNorm.">Why use a Mask? It keeps training and inference conditions aligned. During training, the model has the full target sequence, such as I love cats. If Attention could see future tokens, the model could simply copy the answer without learning translation. During inference, the model can only generate one token at a time and only see the past, so training must simulate that restriction. This sublayer is also followed by residual connection plus LayerNorm.</p>
 
-        <p class="article-h2" data-zh="Cross-Attention" data-en="Cross-Attention">Cross-Attention</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-h2">Cross-Attention</p>
+        <p class="article-p"
            data-zh="這是 Decoder 和 Encoder 連接的地方。這個子層也是 Attention，但 Q、K、V 分別來自不同地方："
            data-en="This is where the Decoder connects to the Encoder. This sublayer is also Attention, but Q, K, and V come from different places:">This is where the Decoder connects to the Encoder. This sublayer is also Attention, but Q, K, and V come from different places:</p>
 
-        <ul class="space-y-3 text-sm mb-4" style="color: var(--text-3);">
-          <li class="flex gap-3">
-            <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
-            <span><strong class="article-strong" data-zh="Q" data-en="Q">Q</strong><span data-zh=" 來自 Decoder 上一個子層（Masked Self-Attention 的輸出）" data-en=" comes from the previous Decoder sublayer, the output of Masked Self-Attention."> comes from the previous Decoder sublayer, the output of Masked Self-Attention.</span></span>
+        <ul class="article-list">
+          <li>
+            <span><strong class="article-strong">Q</strong><span data-zh=" 來自 Decoder 上一個子層（Masked Self-Attention 的輸出）" data-en=" comes from the previous Decoder sublayer, the output of Masked Self-Attention."> comes from the previous Decoder sublayer, the output of Masked Self-Attention.</span></span>
           </li>
-          <li class="flex gap-3">
-            <span class="font-mono flex-shrink-0" style="color: var(--text-5);">·</span>
+          <li>
             <span><strong class="article-strong" data-zh="K 和 V" data-en="K and V">K and V</strong><span data-zh=" 都來自 " data-en=" both come from the "> both come from the </span><strong class="article-strong" data-zh="Encoder 的最終輸出矩陣" data-en="Encoder's final output matrix">Encoder's final output matrix</strong><span data-zh="" data-en=".">.</span></span>
           </li>
         </ul>
@@ -272,21 +240,21 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
 \operatorname{Attention}(Q_{\text{decoder}},K_{\text{encoder}},V_{\text{encoder}})
 \]`}</div>
 
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="為什麼要這樣設計？翻譯的本質是：生成每個目標詞時，都需要參考原文的某些部分。Cross-Attention 讓 Decoder 的每個位置能動態地決定目前生成這個詞時，最需要關注原文的哪些地方。例如，Decoder 正在生成 cats 時，Q 代表我現在想找什麼原文資訊，Encoder 輸出的 K 代表原文各個位置有什麼資訊可以被查，V 是查到之後提供的實際內容。Attention 計算後，貓這個原文位置的權重會最高，Decoder 就能從 Encoder 的輸出中提取到對應語義，生成 cats。"
            data-en="Why design it this way? Translation requires referencing parts of the source sentence while generating each target token. Cross-Attention lets each Decoder position dynamically decide which source positions matter most for the token currently being generated. For example, when the Decoder is generating cats, Q represents what source information it is looking for, K from the Encoder output represents what information each source position exposes, and V is the actual content provided after lookup. After Attention is computed, the source position for 貓 receives the highest weight, so the Decoder can extract the corresponding meaning from the Encoder output and generate cats.">Why design it this way? Translation requires referencing parts of the source sentence while generating each target token. Cross-Attention lets each Decoder position dynamically decide which source positions matter most for the token currently being generated. For example, when the Decoder is generating cats, Q represents what source information it is looking for, K from the Encoder output represents what information each source position exposes, and V is the actual content provided after lookup. After Attention is computed, the source position for 貓 receives the highest weight, so the Decoder can extract the corresponding meaning from the Encoder output and generate cats.</p>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="Encoder 的輸出矩陣在 Decoder 的 6 層裡被反覆使用：每一層的 Cross-Attention 都用同一份 Encoder 輸出作為 K 和 V，但每層的 Q 不同，因為每層 Decoder 自己的表示不斷在演化。這讓 Decoder 每一層都能從不同深度的視角去查詢原文。同樣跟著殘差連接 + LayerNorm。"
            data-en="The Encoder output matrix is reused across all 6 Decoder layers: every layer's Cross-Attention uses the same Encoder output as K and V, while Q differs at each layer because the Decoder representation keeps evolving. This lets each Decoder layer query the source sentence from a different depth. It is again followed by residual connection plus LayerNorm.">The Encoder output matrix is reused across all 6 Decoder layers: every layer's Cross-Attention uses the same Encoder output as K and V, while Q differs at each layer because the Decoder representation keeps evolving. This lets each Decoder layer query the source sentence from a different depth. It is again followed by residual connection plus LayerNorm.</p>
 
         <p class="article-h2" data-zh="前饋網路" data-en="Feed-Forward Network">Feed-Forward Network</p>
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="和 Encoder 裡的前饋網路完全相同：512→2048→512，ReLU，position-wise 獨立計算，最後殘差連接 + LayerNorm。Decoder 的每個 token 在整合了自己過去生成的歷史（Masked Self-Attention）和原文資訊（Cross-Attention）之後，再用 FFN 做一次非線性消化。"
            data-en="This is the same as the feed-forward network in the Encoder: 512→2048→512, ReLU, position-wise independent computation, followed by residual connection plus LayerNorm. After each Decoder token integrates its own generated history through Masked Self-Attention and source information through Cross-Attention, FFN performs another round of nonlinear digestion.">This is the same as the feed-forward network in the Encoder: 512→2048→512, ReLU, position-wise independent computation, followed by residual connection plus LayerNorm. After each Decoder token integrates its own generated history through Masked Self-Attention and source information through Cross-Attention, FFN performs another round of nonlinear digestion.</p>
 
         <p class="article-h2" data-zh="選出下一個詞" data-en="Choosing the Next Token">Choosing the Next Token</p>
-        <p class="text-lg leading-relaxed mb-4" style="color: var(--text-3);"
+        <p class="article-p"
            data-zh="Decoder 6 層跑完後，輸出一個 $d_&#123;\\text&#123;model&#125;&#125; = 512$ 維的向量（對應目前生成步驟的最後一個位置）。這個向量要轉換成下一個詞應該是哪個詞的機率分佈："
            data-en="After the 6 Decoder layers finish, the model outputs a $d_&#123;\\text&#123;model&#125;&#125; = 512$ dimensional vector corresponding to the last position in the current generation step. This vector must be converted into a probability distribution over the next token:">After the 6 Decoder layers finish, the model outputs a $d_&#123;&#92;text&#123;model&#125;&#125; = 512$ dimensional vector corresponding to the last position in the current generation step. This vector must be converted into a probability distribution over the next token:</p>
 
@@ -297,16 +265,16 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
           </li>
           <li class="article-step">
             <span class="article-step-index">2</span>
-            <span><strong class="article-strong" data-zh="Softmax" data-en="Softmax">Softmax</strong><span data-zh="：把所有數值轉成加起來等於 1 的機率，選機率最高的詞作為輸出" data-en=": convert all values into probabilities that sum to 1, then select the token with the highest probability as the output.">: convert all values into probabilities that sum to 1, then select the token with the highest probability as the output.</span></span>
+            <span><strong class="article-strong">Softmax</strong><span data-zh="：把所有數值轉成加起來等於 1 的機率，選機率最高的詞作為輸出" data-en=": convert all values into probabilities that sum to 1, then select the token with the highest probability as the output.">: convert all values into probabilities that sum to 1, then select the token with the highest probability as the output.</span></span>
           </li>
         </ol>
 
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="選出的詞被加進 Decoder 的輸入，整個流程再跑一遍，直到生成結束符 &lt;EOS&gt;。"
            data-en="The selected token is added to the Decoder input, and the whole process runs again until the end token &lt;EOS&gt; is generated.">The selected token is added to the Decoder input, and the whole process runs again until the end token &lt;EOS&gt; is generated.</p>
       </div>
 
-      <div class="border-t mt-10 pt-8" style="border-color: var(--border);">
+      <div class="article-section">
         <p class="section-label" data-zh="完整流程" data-en="Full Flow">Full Flow</p>
         <div class="transformer-flow" data-transformer-flow>
           <div class="flow-controls" data-transformer-flow-tabs aria-label="Transformer full flow steps">
@@ -362,49 +330,49 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
               <path class="flow-edge flow-edge-loop" data-flow-edge="5" d="M400 444 C552 444 584 224 576 196 C572 176 552 164 536 164" marker-end="url(#flow-arrow)" />
 
               <rect x="120" y="136" width="48" height="16" rx="2" class="flow-label-mask" />
-              <text x="144" y="148" class="flow-edge-label" data-zh="EMBED" data-en="EMBED">EMBED</text>
+              <text x="144" y="148" class="flow-edge-label">EMBED</text>
               <rect x="304" y="304" width="40" height="16" rx="2" class="flow-label-mask" />
-              <text x="324" y="316" class="flow-edge-label" data-zh="MEM" data-en="MEM">MEM</text>
+              <text x="324" y="316" class="flow-edge-label">MEM</text>
               <rect x="472" y="256" width="48" height="16" rx="2" class="flow-label-mask" />
-              <text x="496" y="268" class="flow-edge-label" data-zh="NEXT" data-en="NEXT">NEXT</text>
+              <text x="496" y="268" class="flow-edge-label">NEXT</text>
               <rect x="400" y="380" width="56" height="16" rx="2" class="flow-label-mask" />
-              <text x="428" y="392" class="flow-edge-label" data-zh="LOGITS" data-en="LOGITS">LOGITS</text>
+              <text x="428" y="392" class="flow-edge-label">LOGITS</text>
               <rect x="492" y="420" width="80" height="16" rx="2" class="flow-label-mask" />
-              <text x="532" y="432" class="flow-edge-label" data-zh="FEED BACK" data-en="FEED BACK">FEED BACK</text>
+              <text x="532" y="432" class="flow-edge-label">FEED BACK</text>
 
               <g class="flow-node is-active" data-flow-target="0" role="button" tabindex="0" aria-label="Input">
                 <rect x="64" y="40" width="160" height="80" rx="40" class="flow-node-mask" />
                 <rect x="64" y="40" width="160" height="80" rx="40" class="flow-node-box flow-node-input" />
                 <rect x="76" y="52" width="44" height="16" rx="2" class="flow-node-tag" />
-                <text x="98" y="64" class="flow-tag-text" data-zh="SRC" data-en="SRC">SRC</text>
-                <text x="144" y="84" class="flow-node-title" data-zh="我 愛 貓" data-en="我 愛 貓">我 愛 貓</text>
-                <text x="144" y="104" class="flow-node-subtitle" data-zh="3 tokens" data-en="3 tokens">3 tokens</text>
+                <text x="98" y="64" class="flow-tag-text">SRC</text>
+                <text x="144" y="84" class="flow-node-title">我 愛 貓</text>
+                <text x="144" y="104" class="flow-node-subtitle">3 tokens</text>
               </g>
 
               <g class="flow-node" data-flow-target="1" role="button" tabindex="0" aria-label="Vectorize">
                 <rect x="64" y="160" width="160" height="80" rx="6" class="flow-node-mask" />
                 <rect x="64" y="160" width="160" height="80" rx="6" class="flow-node-box" />
                 <rect x="76" y="172" width="44" height="16" rx="2" class="flow-node-tag" />
-                <text x="98" y="184" class="flow-tag-text" data-zh="VEC" data-en="VEC">VEC</text>
+                <text x="98" y="184" class="flow-tag-text">VEC</text>
                 <text x="144" y="204" class="flow-node-title" data-zh="Embedding + 位置" data-en="Embedding + Position">Embedding + Position</text>
-                <text x="144" y="224" class="flow-node-subtitle" data-zh="3 x 512" data-en="3 x 512">3 x 512</text>
+                <text x="144" y="224" class="flow-node-subtitle">3 x 512</text>
               </g>
 
               <g class="flow-node" data-flow-target="2" role="button" tabindex="0" aria-label="Encoder Memory">
                 <rect x="64" y="280" width="160" height="80" rx="6" class="flow-node-mask" />
                 <rect x="64" y="280" width="160" height="80" rx="6" class="flow-node-box" />
                 <rect x="76" y="292" width="44" height="16" rx="2" class="flow-node-tag" />
-                <text x="98" y="304" class="flow-tag-text" data-zh="ENC" data-en="ENC">ENC</text>
-                <text x="144" y="324" class="flow-node-title" data-zh="Encoder x 6" data-en="Encoder x 6">Encoder x 6</text>
-                <text x="144" y="344" class="flow-node-subtitle" data-zh="Self-Attn + FFN" data-en="Self-Attn + FFN">Self-Attn + FFN</text>
+                <text x="98" y="304" class="flow-tag-text">ENC</text>
+                <text x="144" y="324" class="flow-node-title">Encoder x 6</text>
+                <text x="144" y="344" class="flow-node-subtitle">Self-Attn + FFN</text>
               </g>
 
               <g class="flow-node" data-flow-target="5" role="button" tabindex="0" aria-label="Generated History">
                 <rect x="416" y="160" width="160" height="80" rx="6" class="flow-node-mask" />
                 <rect x="416" y="160" width="160" height="80" rx="6" class="flow-node-box flow-node-store" />
                 <rect x="428" y="172" width="44" height="16" rx="2" class="flow-node-tag" />
-                <text x="450" y="184" class="flow-tag-text" data-zh="HIST" data-en="HIST">HIST</text>
-                <text x="496" y="204" class="flow-node-title" data-zh="&lt;BOS&gt; I love" data-en="&lt;BOS&gt; I love">&lt;BOS&gt; I love</text>
+                <text x="450" y="184" class="flow-tag-text">HIST</text>
+                <text x="496" y="204" class="flow-node-title">&lt;BOS&gt; I love</text>
                 <text x="496" y="224" class="flow-node-subtitle" data-zh="已生成歷史" data-en="generated history">generated history</text>
               </g>
 
@@ -412,22 +380,22 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
                 <rect x="416" y="280" width="160" height="80" rx="6" class="flow-node-mask" />
                 <rect x="416" y="280" width="160" height="80" rx="6" class="flow-node-box" />
                 <rect x="428" y="292" width="44" height="16" rx="2" class="flow-node-tag" />
-                <text x="450" y="304" class="flow-tag-text" data-zh="DEC" data-en="DEC">DEC</text>
-                <text x="496" y="324" class="flow-node-title" data-zh="Decoder x 6" data-en="Decoder x 6">Decoder x 6</text>
-                <text x="496" y="344" class="flow-node-subtitle" data-zh="Mask + Cross-Attn" data-en="Mask + Cross-Attn">Mask + Cross-Attn</text>
+                <text x="450" y="304" class="flow-tag-text">DEC</text>
+                <text x="496" y="324" class="flow-node-title">Decoder x 6</text>
+                <text x="496" y="344" class="flow-node-subtitle">Mask + Cross-Attn</text>
               </g>
 
               <g class="flow-node" data-flow-target="4" role="button" tabindex="0" aria-label="Pick Next Token">
                 <rect x="240" y="400" width="160" height="80" rx="6" class="flow-node-mask" />
                 <rect x="240" y="400" width="160" height="80" rx="6" class="flow-node-box" />
                 <rect x="252" y="412" width="44" height="16" rx="2" class="flow-node-tag" />
-                <text x="274" y="424" class="flow-tag-text" data-zh="OUT" data-en="OUT">OUT</text>
-                <text x="320" y="444" class="flow-node-title" data-zh="Linear + Softmax" data-en="Linear + Softmax">Linear + Softmax</text>
-                <text x="320" y="464" class="flow-node-subtitle" data-zh="cats / &lt;EOS&gt;" data-en="cats / &lt;EOS&gt;">cats / &lt;EOS&gt;</text>
+                <text x="274" y="424" class="flow-tag-text">OUT</text>
+                <text x="320" y="444" class="flow-node-title">Linear + Softmax</text>
+                <text x="320" y="464" class="flow-node-subtitle">cats / &lt;EOS&gt;</text>
               </g>
 
               <line x1="40" y1="512" x2="600" y2="512" class="flow-legend-rule" />
-              <text x="40" y="532" class="flow-legend-label" data-zh="LEGEND" data-en="LEGEND">LEGEND</text>
+              <text x="40" y="532" class="flow-legend-label">LEGEND</text>
               <rect x="128" y="520" width="16" height="12" rx="2" class="flow-legend-default" />
               <text x="152" y="532" class="flow-legend-item" data-zh="步驟" data-en="step">step</text>
               <rect x="220" y="520" width="16" height="12" rx="2" class="flow-legend-focus" />
@@ -438,44 +406,44 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
 
             <div class="flow-detail" data-transformer-flow-panels>
               <div data-panel="0">
-                <p class="flow-detail-kicker" data-zh="STEP 1" data-en="STEP 1">STEP 1</p>
+                <p class="flow-detail-kicker">STEP 1</p>
                 <p class="article-h3" data-zh="輸入句子先被切成 tokens" data-en="The sentence becomes tokens">The sentence becomes tokens</p>
-                <p class="text-lg leading-relaxed mb-0" style="color: var(--text-3);"
+                <p class="article-p mb-0"
                    data-zh="例子是「我 愛 貓」。模型看到的不是一句完整文字，而是一串 token。後面所有矩陣運算都沿著這串 token 展開。"
                    data-en="The example is 我 愛 貓. The model sees a token sequence, and every matrix operation that follows is arranged around that sequence.">The example is 我 愛 貓. The model sees a token sequence, and every matrix operation that follows is arranged around that sequence.</p>
               </div>
               <div data-panel="1" hidden>
-                <p class="flow-detail-kicker" data-zh="STEP 2" data-en="STEP 2">STEP 2</p>
+                <p class="flow-detail-kicker">STEP 2</p>
                 <p class="article-h3" data-zh="Embedding 加上位置資訊" data-en="Embedding adds position">Embedding adds position</p>
-                <p class="text-lg leading-relaxed mb-0" style="color: var(--text-3);"
+                <p class="article-p mb-0"
                    data-zh="每個 token 先變成 512 維向量，再加上 Positional Encoding。這一步讓模型同時知道「這個詞是什麼」以及「它在第幾個位置」。"
                    data-en="Each token becomes a 512 dimensional vector, then Positional Encoding is added. This tells the model both what the token is and where it appears.">Each token becomes a 512 dimensional vector, then Positional Encoding is added. This tells the model both what the token is and where it appears.</p>
               </div>
               <div data-panel="2" hidden>
-                <p class="flow-detail-kicker" data-zh="STEP 3" data-en="STEP 3">STEP 3</p>
+                <p class="flow-detail-kicker">STEP 3</p>
                 <p class="article-h3" data-zh="Encoder 產生整句記憶" data-en="Encoder creates sentence memory">Encoder creates sentence memory</p>
-                <p class="text-lg leading-relaxed mb-0" style="color: var(--text-3);"
+                <p class="article-p mb-0"
                    data-zh="Encoder 透過 Self-Attention 和 FFN 反覆整合整句上下文。輸出仍是 3 x 512，但每一列都已經帶有全句資訊。"
                    data-en="The Encoder repeatedly combines full-sentence context through Self-Attention and FFN. The output is still 3 x 512, with each row carrying sentence-level information.">The Encoder repeatedly combines full-sentence context through Self-Attention and FFN. The output is still 3 x 512, with each row carrying sentence-level information.</p>
               </div>
               <div data-panel="3" hidden>
-                <p class="flow-detail-kicker" data-zh="STEP 4" data-en="STEP 4">STEP 4</p>
+                <p class="flow-detail-kicker">STEP 4</p>
                 <p class="article-h3" data-zh="Decoder 一邊看歷史，一邊讀 Encoder" data-en="Decoder reads history and Encoder memory">Decoder reads history and Encoder memory</p>
-                <p class="text-lg leading-relaxed mb-0" style="color: var(--text-3);"
+                <p class="article-p mb-0"
                    data-zh="Decoder 先用 Masked Self-Attention 只看已生成的 token，再用 Cross-Attention 讀 Encoder 記憶。這就是翻譯時能對齊原句的關鍵。"
                    data-en="The Decoder first uses Masked Self-Attention to read generated tokens, then Cross-Attention to read Encoder memory. This is the key link that lets translation align with the source sentence.">The Decoder first uses Masked Self-Attention to read generated tokens, then Cross-Attention to read Encoder memory. This is the key link that lets translation align with the source sentence.</p>
               </div>
               <div data-panel="4" hidden>
-                <p class="flow-detail-kicker" data-zh="STEP 5" data-en="STEP 5">STEP 5</p>
+                <p class="flow-detail-kicker">STEP 5</p>
                 <p class="article-h3" data-zh="Linear + Softmax 選出下一個 token" data-en="Linear + Softmax picks the next token">Linear + Softmax picks the next token</p>
-                <p class="text-lg leading-relaxed mb-0" style="color: var(--text-3);"
+                <p class="article-p mb-0"
                    data-zh="Decoder 最後位置的向量會被投影成詞彙表大小的分數，Softmax 再把分數轉成機率。機率最高的 token 會成為下一個輸出。"
                    data-en="The vector at the final Decoder position is projected into vocabulary-sized scores, then Softmax turns the scores into probabilities. The highest-probability token becomes the next output.">The vector at the final Decoder position is projected into vocabulary-sized scores, then Softmax turns the scores into probabilities. The highest-probability token becomes the next output.</p>
               </div>
               <div data-panel="5" hidden>
-                <p class="flow-detail-kicker" data-zh="STEP 6" data-en="STEP 6">STEP 6</p>
+                <p class="flow-detail-kicker">STEP 6</p>
                 <p class="article-h3" data-zh="新 token 餵回 Decoder，直到 &lt;EOS&gt;" data-en="Feed the token back until &lt;EOS&gt;">Feed the token back until &lt;EOS&gt;</p>
-                <p class="text-lg leading-relaxed mb-0" style="color: var(--text-3);"
+                <p class="article-p mb-0"
                    data-zh="如果輸出還不是 &lt;EOS&gt;，這個 token 會被接到已生成歷史後面，Decoder 再跑一次。翻譯結果就是這個回圈一步一步長出來的。"
                    data-en="If the output is not &lt;EOS&gt;, the token is appended to the generated history and the Decoder runs again. The translation grows one loop at a time.">If the output is not &lt;EOS&gt;, the token is appended to the generated history and the Decoder runs again. The translation grows one loop at a time.</p>
               </div>
@@ -483,26 +451,24 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
           </div>
 
           <div class="flow-token-strip" aria-label="Generated token timeline">
-            <span class="flow-token source" data-zh="我" data-en="我">我</span>
-            <span class="flow-token source" data-zh="愛" data-en="愛">愛</span>
-            <span class="flow-token source" data-zh="貓" data-en="貓">貓</span>
+            <span class="flow-token source">我</span>
+            <span class="flow-token source">愛</span>
+            <span class="flow-token source">貓</span>
             <span class="flow-token bridge" aria-hidden="true">→</span>
-            <span class="flow-token output" data-zh="I" data-en="I">I</span>
-            <span class="flow-token output" data-zh="love" data-en="love">love</span>
-            <span class="flow-token output" data-zh="cats" data-en="cats">cats</span>
-            <span class="flow-token end" data-zh="&lt;EOS&gt;" data-en="&lt;EOS&gt;">&lt;EOS&gt;</span>
+            <span class="flow-token output">I</span>
+            <span class="flow-token output">love</span>
+            <span class="flow-token output">cats</span>
+            <span class="flow-token end">&lt;EOS&gt;</span>
           </div>
         </div>
       </div>
 
-      <div class="border-t mt-10 pt-8" style="border-color: var(--border);">
+      <div class="article-section">
         <p class="section-label" data-zh="參考文獻" data-en="Reference">Reference</p>
-        <p class="text-lg leading-relaxed mb-10" style="color: var(--text-3);"
+        <p class="article-p mb-10"
            data-zh="Vaswani, Ashish, et al. Attention is all you need. Advances in neural information processing systems 30 (2017)."
            data-en="Vaswani, Ashish, et al. Attention Is All You Need. Advances in Neural Information Processing Systems 30 (2017).">Vaswani, Ashish, et al. Attention Is All You Need. Advances in Neural Information Processing Systems 30 (2017).</p>
       </div>
-    </div>
-  </section>
 
   <style>
     .transformer-flow {
@@ -775,9 +741,6 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
     @media (max-width: 720px) {
       .flow-controls {
         grid-template-columns: 1fr;
-      }
-
-      .flow-controls {
         gap: 6px;
       }
 
@@ -831,5 +794,5 @@ QK^T_{ij}/\sqrt{d_k}, & j \leq i \\
       });
     })();
   </script>
-</Layout>
+</ArticleLayout>
 

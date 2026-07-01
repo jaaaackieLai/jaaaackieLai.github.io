@@ -1,7 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { topics } from '../../../data/topics';
-import { getTopicArticles } from '../../../lib/articles';
+import { articleUrl, getTopicArticles } from '../../../lib/articles';
 
 // 每個 topic 自動生成一頁。header 讀 topics.ts,文章列表讀合併後的 metadata。
 export function getStaticPaths() {
@@ -42,7 +42,7 @@ const articles = getTopicArticles(topic.slug);
       <p class="section-heading" data-zh="系列文章" data-en="Article Series">Article Series</p>
       <div class="space-y-4">
         {articles.map((article, index) => (
-          <a href={article.url} class="article-card">
+          <a href={articleUrl(article)} class="article-card">
             <div class="flex items-start gap-4">
               <span class="text-2xl font-mono font-bold flex-shrink-0 mt-0.5" style="color: var(--text-5);">
                 {String(index + 1).padStart(2, '0')}
